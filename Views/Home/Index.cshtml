@@ -1,0 +1,50 @@
+﻿@model IEnumerable<PizzeriaOnline.Models.Dto.ProductDto>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @foreach (var item in Model)
+    {
+        <div class="item">
+            <h3>
+                @Html.DisplayNameFor(modelItem => item.Title)
+                @Html.DisplayFor(modelItem => item.Title)
+            </h3>
+           
+            <div>
+                <span class="display-field">
+                    @Html.DisplayNameFor(modelItem => item.Availability)
+                    @Html.DisplayFor(modelItem => item.Availability)
+                </span>
+            </div>
+
+            <div>
+                @foreach (var priceForSize in item.PricesForSizes)
+                {
+                <span class="display-field">
+                    @Html.DisplayNameFor(modelItem => priceForSize.Size)
+                    @Html.DisplayFor(model => priceForSize.Size)
+                    @Html.DisplayNameFor(modelItem => priceForSize.Price)
+                    @Html.DisplayFor(model => priceForSize.Price)
+
+                </span>
+                }
+
+            </div>
+            <div>
+                @foreach (var component in item.Components)
+                {
+                    <span class="display-field">
+                        @Html.DisplayNameFor(modelItem => component.Component.Name)
+                        @Html.DisplayFor(model => component.Component.Name)
+                    </span>
+                }
+            </div>
+        </div>
+    }
+</div>
