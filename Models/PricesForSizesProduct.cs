@@ -12,12 +12,16 @@ namespace PizzeriaOnline.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Rozmiar:")]
+        [Required(ErrorMessage = "Proszę podać rozmiar")]
         public ProductSize? Size { get; set; }
 
+        [Display(Name = "Cena:")]
+        [Required(ErrorMessage = "Proszę podać cenę")]
+        [Range(1, 60)]
         public double Price { get; set; }
 
         public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
 
     }
 }

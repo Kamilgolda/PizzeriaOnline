@@ -12,9 +12,13 @@ namespace PizzeriaOnline.Models
     public class Product
     {
         public int Id { get; set; }
-        
+
+        [Display(Name = "Nazwa:")]
+        [Required(ErrorMessage = "Proszę podać nazwę")]
+        [StringLength(50)]
         public string Title { get; set; }
 
+        [Display(Name = "Dostępność:")]
         public bool Availability { get; set; }
         
         //Obrazek + Controler(getimg) + Repo (po => id)

@@ -138,7 +138,7 @@ namespace PizzeriaOnline.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Size")
+                    b.Property<int?>("Size")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -190,8 +190,6 @@ namespace PizzeriaOnline.Migrations
                         .HasColumnType("BLOB");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -246,31 +244,27 @@ namespace PizzeriaOnline.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PizzeriaOnline.Models.Product", "Product")
+                    b.HasOne("PizzeriaOnline.Models.Product", null)
                         .WithMany("Components")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Component");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PizzeriaOnline.Models.PricesForSizesProduct", b =>
                 {
-                    b.HasOne("PizzeriaOnline.Models.Product", "Product")
+                    b.HasOne("PizzeriaOnline.Models.Product", null)
                         .WithMany("PricesForSizes")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PizzeriaOnline.Models.ProductsInOrder", b =>
                 {
-                    b.HasOne("PizzeriaOnline.Models.Order", "Order")
+                    b.HasOne("PizzeriaOnline.Models.Order", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -281,8 +275,6 @@ namespace PizzeriaOnline.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });

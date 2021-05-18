@@ -16,8 +16,6 @@ namespace PizzeriaOnline
 
             CreateMap<PricesForSizesProduct, PricesForSizesProductDto>();
             CreateMap<ComponentsProduct, ComponentsProductDto>();
-
-            //CreateMap<CreateProductDto, Product>();
         }
     }
 }

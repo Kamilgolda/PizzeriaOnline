@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PizzeriaOnline.Models.Dto.ProductDto>
+﻿@model Task<IEnumerable<PizzeriaOnline.Models.Product>>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -8,7 +8,7 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Result)
     {
         <div class="item">
             <h3>

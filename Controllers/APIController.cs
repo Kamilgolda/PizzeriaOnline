@@ -19,62 +19,65 @@ namespace PizzeriaOnline.Controllers
     public class APIController : ControllerBase
     {
         private readonly IProductsService _service;
+        private readonly IMapper _mapper;
 
-        public APIController(IProductsService service)
+        public APIController(IProductsService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         //// GET: api/<APIController>
         [HttpGet]
-        public IEnumerable<ProductDto> GetAll()
+        public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            var productsdto = _service.GetAll();
-            return productsdto;
+            var products =await _service.GetAll();
+
+            return _mapper.Map<List<ProductDto>>(products);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ProductDto> Get(int id)
+        public async Task<ActionResult<ProductDto>> Get(int id)
         {
-            var productdto = _service.GetById(id);
-            return (productdto is null) ? NotFound() : Ok(productdto);
+            var product =await _service.GetById(id);
+            return (product is null) ? NotFound() : Ok(_mapper.Map<ProductDto>(product));
         }
 
-        // POST api/<APIController>
-        [HttpPost]
-        public ActionResult CreateProduct([FromBody] CreateProductDto dto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var id = _service.Create(dto);
+        //// POST api/<APIController>
+        //[HttpPost]
+        //public ActionResult CreateProduct([FromBody] CreateProductDto dto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    var id = _service.Create(dto);
 
-            return Created($"/api/products/{id}", null);
-        }
+        //    return Created($"/api/products/{id}", null);
+        //}
 
-        // DELETE api/<APIController>/5
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
-        {
-            var isDeleted = _service.Delete(id);
-            return isDeleted ? NoContent() : NotFound();
-        }
+        //// DELETE api/<APIController>/5
+        //[HttpDelete("{id}")]
+        //public ActionResult Delete(int id)
+        //{
+        //    var isDeleted = _service.Delete(id);
+        //    return isDeleted ? NoContent() : NotFound();
+        //}
 
-        // PUT api/<APIController>/5
-        [HttpPut("{id}")]
-        public ActionResult Put(int id,[FromBody] UpdateProductDto dto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //// PUT api/<APIController>/5
+        //[HttpPut("{id}")]
+        //public ActionResult Put(int id,[FromBody] UpdateProductDto dto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            var isUpdated = _service.Update(id, dto);
+        //    var isUpdated = _service.Update(id, dto);
 
-            return isUpdated ? Ok() : NotFound();
+        //    return isUpdated ? Ok() : NotFound();
 
-        }
+        //}
 
 
         //// GET: api/<APIController>

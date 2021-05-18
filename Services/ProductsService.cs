@@ -13,75 +13,74 @@ namespace PizzeriaOnline.Services
     public class ProductsService : IProductsService
     {
         private readonly Context _context;
-        private readonly IMapper _mapper;
 
-        public ProductsService(Context context, IMapper mapper)
+        public ProductsService(Context context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public IEnumerable<ProductDto> GetAll()
+        public async Task<IEnumerable<Product>> GetAll()
         {
-            var products = _context
+            var products = await _context
                 .Products
                 .Include(o => o.Components).ThenInclude(c => c.Component)
                 .Include(o => o.PricesForSizes)
-                .ToList();
+                .ToListAsync();
 
-            return _mapper.Map<List<ProductDto>>(products);
+            return products;
+            
         }
 
-        public ProductDto GetById(int id)
+        public async Task<Product> GetById(int? id)
         {
-            var product = _context
+            var product = await _context
                 .Products
                 .Include(o => o.Components).ThenInclude(c => c.Component)
                 .Include(o => o.PricesForSizes)
-                .FirstOrDefault(o => o.Id == id);
+                .FirstOrDefaultAsync(o => o.Id == id);
 
-            return product is null ? null : _mapper.Map<ProductDto>(product);
+            return product is null ? null : product;
+
         }
 
-        public int Create(CreateProductDto dto)
+        public async Task<int> Create(Product product)
         {
-            var product = _mapper.Map<Product>(dto);
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
 
             return product.Id;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var product = _context
+            var product = await _context
                .Products
-               .FirstOrDefault(o => o.Id == id);
+               .FirstOrDefaultAsync(o => o.Id == id);
 
             if (product is null) return false;
 
             _context.Products.Remove(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public bool Update(int id, UpdateProductDto dto)
-        {
-            var product = _context
-               .Products
-               .Include(o => o.Components).ThenInclude(c => c.Component)
-               .Include(o => o.PricesForSizes)
-               .FirstOrDefault(o => o.Id == id);
+        //public bool Update(int id, UpdateProductDto dto)
+        //{
+        //    var product = _context
+        //       .Products
+        //       .Include(o => o.Components).ThenInclude(c => c.Component)
+        //       .Include(o => o.PricesForSizes)
+        //       .FirstOrDefault(o => o.Id == id);
 
-            if (product is null) return false;
+        //    if (product is null) return false;
 
-            product.Title = dto.Title;
-            product.Availability = dto.Availability;
-            //product.PricesForSizes = _mapper.Map<PricesForSizesProductDto>(PricesForSizesProduct);
-            //product.Components = dto.Components;
-            _context.SaveChanges();
-            return true;
-        }
+        //    product.Title = dto.Title;
+        //    product.Availability = dto.Availability;
+        //    //product.PricesForSizes = _mapper.Map<PricesForSizesProductDto>(PricesForSizesProduct);
+        //    //product.Components = dto.Components;
+        //    _context.SaveChanges();
+        //    return true;
+        //}
 
     }
 }

@@ -45,7 +45,7 @@ namespace PizzeriaOnline.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
                     Availability = table.Column<bool>(type: "INTEGER", nullable: false),
                     ImageName = table.Column<string>(type: "TEXT", nullable: true),
                     ImageMimeType = table.Column<string>(type: "TEXT", nullable: true),
@@ -88,7 +88,7 @@ namespace PizzeriaOnline.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Size = table.Column<int>(type: "INTEGER", nullable: false),
+                    Size = table.Column<int>(type: "INTEGER", nullable: true),
                     Price = table.Column<double>(type: "REAL", nullable: false),
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
