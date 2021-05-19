@@ -1,0 +1,17 @@
+﻿body {
+    background: linear-gradient(to bottom, #000000, #c20202);
+    color: #ffffff;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+    font-size: 18px;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+        color: rgba(255,0,0,0.7);
+    }
+.mg-top150{
+    margin-top: 150px;
+}
+.mg-top50 {
+    margin-top: 50px;
+}
