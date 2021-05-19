@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PizzeriaOnline.Data;
+using PizzeriaOnline.Models;
 using PizzeriaOnline.Services;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,16 @@ namespace PizzeriaOnline
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 7;
+                options.Password.RequireUppercase = true;
+
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<Context>();
 
             services.AddDbContext<Context>();
             services.AddAutoMapper(this.GetType().Assembly);
@@ -50,6 +62,9 @@ namespace PizzeriaOnline
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            //auth
+            app.UseAuthentication();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

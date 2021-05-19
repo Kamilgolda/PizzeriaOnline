@@ -5,17 +5,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PizzeriaOnline.Enums;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace PizzeriaOnline.Data
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext<User>
     {
+        public Context(DbContextOptions<Context> options): base(options)
+        {
+
+        }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Component> Components { get; set; }
         public DbSet<PricesForSizesProduct> PricesForSizesProducts { get; set; }
         public DbSet<ComponentsProduct> ComponentsProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<ProductsInOrder> ProductsInOrders { get; set; }
+        public DbSet<User> UsersDbSet { get; set; } //Nazwa - bo nie przysłaniam contextu 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,6 +31,8 @@ namespace PizzeriaOnline.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Product>().HasData(
                new Product()
                {
