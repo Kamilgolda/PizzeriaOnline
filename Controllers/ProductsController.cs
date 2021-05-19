@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +17,13 @@ namespace PizzeriaOnline.Controllers
     {
         private readonly Context _context;
         private readonly IProductsService _productsService;
+        private readonly IHostingEnvironment _environment;
 
-        public ProductsController(Context context, IProductsService productsService)
+        public ProductsController(Context context, IProductsService productsService, IHostingEnvironment environment)
         {
             _context = context;
             _productsService = productsService;
+            _environment = environment;
         }
 
         // GET: Products
@@ -56,13 +60,11 @@ namespace PizzeriaOnline.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Availability,ImageName,ImageMimeType,PhotoFile")] Product product)
+        public IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                _productsService.Create(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -152,5 +154,45 @@ namespace PizzeriaOnline.Controllers
         {
             return _context.Products.Any(e => e.Id == id);
         }
+
+        //GET_IMAGE
+
+        public async Task<IActionResult> GetImage(int id)
+        {
+            Product requested = await _productsService.GetById(id);
+            if (requested != null)
+            {
+                string webRootpath = _environment.WebRootPath;
+                string folderPath = "\\images\\";
+                string fullPath = webRootpath + folderPath + requested.ImageName;
+                if (System.IO.File.Exists(fullPath))
+                {
+                    FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                    byte[] fileBytes;
+                    using (BinaryReader br = new BinaryReader(fileOnDisk))
+                    {
+                        fileBytes = br.ReadBytes((int)fileOnDisk.Length);
+                    }
+                    return File(fileBytes, requested.ImageMimeType);
+                }
+                else
+                {
+                    if (requested.PhotoFile.Length > 0)
+                    {
+                        return File(requested.PhotoFile, requested.ImageMimeType);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
     }
 }

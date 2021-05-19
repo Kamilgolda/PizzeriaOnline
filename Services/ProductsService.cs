@@ -5,6 +5,7 @@ using PizzeriaOnline.Models;
 using PizzeriaOnline.Models.Dto;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,12 +44,24 @@ namespace PizzeriaOnline.Services
 
         }
 
-        public async Task<int> Create(Product product)
+        public void Create(Product product)
         {
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
+            if (product.PhotoAvatar != null && product.PhotoAvatar.Length > 0)
+            {
+                product.ImageMimeType = product.PhotoAvatar.ContentType;
+                product.ImageName = Path.GetFileName(product.PhotoAvatar.FileName);
+                using (var memoryStream = new MemoryStream())
+                {
+                    product.PhotoAvatar.CopyTo(memoryStream);
+                    product.PhotoFile = memoryStream.ToArray();
+                }
+                _context.Add(product);
+                _context.SaveChanges();
+            }
+            //await _context.Products.AddAsync(product);
+            //await _context.SaveChangesAsync();
 
-            return product.Id;
+            //return product.Id;
         }
 
         public async Task<bool> Delete(int id)

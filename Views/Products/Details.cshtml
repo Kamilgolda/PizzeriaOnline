@@ -23,35 +23,23 @@
             @Html.DisplayFor(model => model.Availability)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageName)
+            @Html.DisplayNameFor(model => model.PhotoAvatar)
         </dt>
+
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageMimeType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageMimeType)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotoFile)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhotoFile)
+            <img class="photo-display-img" src="@Url.Action("GetImage", "Products", new { Id = Model.Id })" />
         </dd>
 
+            @foreach (var priceForSize in Model.PricesForSizes)
+            {
+                <span class="display-field">
+                    @Html.DisplayNameFor(modelItem => priceForSize.Size)
+                    @Html.DisplayFor(model => priceForSize.Size)
+                    @Html.DisplayNameFor(modelItem => priceForSize.Price)
+                    @Html.DisplayFor(model => priceForSize.Price)
 
-        @foreach (var priceForSize in Model.PricesForSizes)
-        {
-            <span class="display-field">
-                @Html.DisplayNameFor(modelItem => priceForSize.Size)
-                @Html.DisplayFor(model => priceForSize.Size)
-                @Html.DisplayNameFor(modelItem => priceForSize.Price)
-                @Html.DisplayFor(model => priceForSize.Price)
-
-            </span>
-        }
+                </span>
+            }
     </dl>
 </div>
 <div>
