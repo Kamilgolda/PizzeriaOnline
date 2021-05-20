@@ -4,47 +4,49 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="pizza-list">
 
     @foreach (var item in Model.Result)
     {
-        <div class="item">
-            <h3>
-                @Html.DisplayNameFor(modelItem => item.Title)
-                @Html.DisplayFor(modelItem => item.Title)
-            </h3>
-           
-            <div>
-                <span class="display-field">
-                    @Html.DisplayNameFor(modelItem => item.Availability)
-                    @Html.DisplayFor(modelItem => item.Availability)
-                </span>
-            </div>
+    <div class="pizza-item">
+        @Html.DisplayFor(modelItem => item.Title)
+        <img class="photo-pizza" src="@Url.Action("GetImage", "Home", new { Id = item.Id })" />
 
-            <div>
-                @foreach (var priceForSize in item.PricesForSizes)
-                {
-                <span class="display-field">
-                    @Html.DisplayNameFor(modelItem => priceForSize.Size)
-                    @Html.DisplayFor(model => priceForSize.Size)
-                    @Html.DisplayNameFor(modelItem => priceForSize.Price)
-                    @Html.DisplayFor(model => priceForSize.Price)
-
-                </span>
-                }
-
-            </div>
-            <div>
+        <div class="content">
+            <br />
+            <div class="font-weight-bold">
                 @foreach (var component in item.Components)
                 {
-                    <span class="display-field">
-                        @Html.DisplayNameFor(modelItem => component.Component.Name)
-                        @Html.DisplayFor(model => component.Component.Name)
+                    <span>
+                        @Html.DisplayFor(model => component.Component.Name),
                     </span>
                 }
             </div>
+            <br />
+            <div class="content-priceForSize">
+                @foreach (var priceForSize in item.PricesForSizes)
+                {
+                    <div>
+                        <span class="font-weight-bold">@Html.DisplayFor(model => priceForSize.Size) </span> :
+                        @Html.DisplayFor(model => priceForSize.Price) zł
+
+                    </div>
+                }
+            </div>
+            <div class="item_to_cart">
+                <button style="background:#000; color:#fff;">Dodaj do koszyka</button>
+                <select>
+                    @foreach (var priceForSize in item.PricesForSizes)
+                    {
+                    <option>@Html.DisplayFor(model => priceForSize.Size)</option>
+                    }
+                    </select>
+            </div>
+            <p>
+                @Html.DisplayNameFor(modelItem => item.Availability)
+                @Html.DisplayFor(modelItem => item.Availability)
+            </p>
         </div>
+    </div>
     }
 </div>

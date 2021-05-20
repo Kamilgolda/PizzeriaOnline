@@ -15,3 +15,58 @@
 .mg-top50 {
     margin-top: 50px;
 }
+.photo-pizza {
+    width: 150px;
+    max-height: 150px;
+}
+
+.pizza-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    background-color: rgb(6 0 0 / 55%);
+    border-radius: 40px;
+    position: relative;
+    top: 100px;
+}
+.pizza-item {
+    position: relative;
+    height: 350px;
+    width: 350px;
+    display: flex;
+    align-items: center;
+    margin: 50px;
+    background: #dedede;
+    border-radius: 15px;
+    cursor: pointer;
+    color: black;
+    flex-flow: column;
+    box-shadow: 15px 15px 20px #888888;
+}
+.pizza-item .content {
+        position: relative;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        flex-flow: column;
+        opacity: 1;
+        border-radius: 10px;
+        width: 100%;
+        flex-wrap: nowrap;
+}
+.content-priceForSize {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    justify-content: space-evenly;
+    padding-bottom: 5px;
+}
+.item_to_cart {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
