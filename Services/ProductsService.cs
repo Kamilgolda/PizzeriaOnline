@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaOnline.Data;
+using PizzeriaOnline.Enums;
 using PizzeriaOnline.Models;
 using PizzeriaOnline.Models.Dto;
+using PizzeriaOnline.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,14 +40,65 @@ namespace PizzeriaOnline.Services
                 .Products
                 .Include(o => o.Components).ThenInclude(c => c.Component)
                 .Include(o => o.PricesForSizes)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             return product is null ? null : product;
 
         }
 
-        public void Create(Product product)
+        public async Task Create(CreateProductViewModel productmodel)
         {
+            List<ComponentsProduct> componentsProductList = new List<ComponentsProduct>();
+            foreach (int? componentId in productmodel.Components)
+            {
+                if (componentId != null) componentsProductList.Add(
+                     new ComponentsProduct()
+                     {
+                         ComponentId = (int)componentId
+                     });
+            }
+
+            foreach (string newcomponentname in productmodel.NewComponents)
+            {
+                if (newcomponentname != null) componentsProductList.Add(
+                    new ComponentsProduct()
+                    {
+                        Component = new Component()
+                        {
+                            Name = newcomponentname.ToLower()
+                        }
+                    });
+            }
+
+            List<PricesForSizesProduct> pricesForSizesList = new List<PricesForSizesProduct>()
+                {
+                    new PricesForSizesProduct()
+                    {
+                        Size=ProductSize.small,
+                        Price=productmodel.PriceForSmall
+                    },
+                    new PricesForSizesProduct()
+                    {
+                        Size=ProductSize.medium,
+                        Price=productmodel.PriceForMedium
+                    },
+                    new PricesForSizesProduct()
+                    {
+                        Size=ProductSize.large,
+                        Price=productmodel.PriceForLarge
+                    }
+                };
+
+            Product product = new Product()
+            {
+                Title = productmodel.Title,
+                Availability = productmodel.Availability,
+                PhotoAvatar = productmodel.PhotoAvatar,
+                PricesForSizes = pricesForSizesList,
+                Components = componentsProductList
+            };
+
             if (product.PhotoAvatar != null && product.PhotoAvatar.Length > 0)
             {
                 product.ImageMimeType = product.PhotoAvatar.ContentType;
@@ -55,13 +108,17 @@ namespace PizzeriaOnline.Services
                     product.PhotoAvatar.CopyTo(memoryStream);
                     product.PhotoFile = memoryStream.ToArray();
                 }
-                _context.Add(product);
-                _context.SaveChanges();
+                await _context.Products.AddAsync(product);
+                await _context.SaveChangesAsync();
             }
-            //await _context.Products.AddAsync(product);
-            //await _context.SaveChangesAsync();
+        }
 
-            //return product.Id;
+        public IQueryable<Component> ComponentsDropDownList()
+        {
+            var componentsQuery = from b in _context.Components
+                                orderby b.Name
+                                select b;
+            return componentsQuery;
         }
 
         public async Task<bool> Delete(int id)
@@ -77,23 +134,79 @@ namespace PizzeriaOnline.Services
             return true;
         }
 
-        //public bool Update(int id, UpdateProductDto dto)
-        //{
-        //    var product = _context
-        //       .Products
-        //       .Include(o => o.Components).ThenInclude(c => c.Component)
-        //       .Include(o => o.PricesForSizes)
-        //       .FirstOrDefault(o => o.Id == id);
+        public async Task Update(EditProductViewModel productmodel)
+        {
+            List<ComponentsProduct> componentsProductList = new List<ComponentsProduct>();
+            foreach (var componentProduct in productmodel.Components)
+            {
+                componentsProductList.Add(componentProduct);
+            }
 
-        //    if (product is null) return false;
+            foreach (int? componentProduct in productmodel.AddComponents)
+            {
+                if (componentProduct != null) {
+                    bool flag = false;
+                    foreach (var c in componentsProductList)
+                    {
+                        if(c.ComponentId == (int)componentProduct)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if( flag == false)
+                    {
+                        componentsProductList.Add(new ComponentsProduct()
+                        {
+                            ComponentId = (int)componentProduct
+                        });
+                    }
+                } 
+            }
 
-        //    product.Title = dto.Title;
-        //    product.Availability = dto.Availability;
-        //    //product.PricesForSizes = _mapper.Map<PricesForSizesProductDto>(PricesForSizesProduct);
-        //    //product.Components = dto.Components;
-        //    _context.SaveChanges();
-        //    return true;
-        //}
+            foreach (string componentProduct in productmodel.NewComponents)
+            {
+                if (componentProduct != null) {
+
+                    componentsProductList.Add(new ComponentsProduct()
+                    {
+                        Component = new Component()
+                        {
+                            Name = componentProduct.ToLower()
+                        }
+                    });
+                } 
+            }
+
+            Product product = new Product()
+            {
+                Id = productmodel.Id,
+                Availability = productmodel.Availability,
+                ImageMimeType = productmodel.ImageMimeType,
+                ImageName = productmodel.ImageName,
+                PhotoAvatar = productmodel.PhotoAvatar,
+                PhotoFile = productmodel.PhotoFile,
+                PricesForSizes = productmodel.PricesForSizes,
+                Title = productmodel.Title,
+                Components = componentsProductList
+                 
+            };
+
+
+
+            if (product.PhotoAvatar != null && product.PhotoAvatar.Length > 0)
+            {
+                product.ImageMimeType = product.PhotoAvatar.ContentType;
+                product.ImageName = Path.GetFileName(product.PhotoAvatar.FileName);
+                using (var memoryStream = new MemoryStream())
+                {
+                    product.PhotoAvatar.CopyTo(memoryStream);
+                    product.PhotoFile = memoryStream.ToArray();
+                }
+            }
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

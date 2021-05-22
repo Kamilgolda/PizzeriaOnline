@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PizzeriaOnline.Models.Product>
+﻿@using PizzeriaOnline.Models
+@model IEnumerable<PizzeriaOnline.Models.Product>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,7 +10,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table-hover">
     <thead>
         <tr>
             <th>
@@ -21,6 +22,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImageName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricesForSizes.First().Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricesForSizes.First().Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Components)
+            </th>
+
 
             <th></th>
         </tr>
@@ -34,9 +45,44 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Availability)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.ImageName)
+                @if (item.ImageName != null)
+                {
+                    <div class="media">
+                        <img class="img-thumbnail" src="@Url.Action("GetImage", "Products", new { Id = item.Id })" style="width:150px" />
+                    </div>
+                }
             </td>
+            <td>
+                <ul class="list-group">
+                    <li class="list-group-item">Mała</li>
+                    <li class="list-group-item">Średnia</li>
+                    <li class="list-group-item">Duża</li>
+                </ul>
+            </td>
+
+            <td>
+                <ul class="list-group">
+                    @foreach (var priceForSize in item.PricesForSizes)
+                    {
+                        <li class="list-group-item">
+                            @Html.DisplayFor(model => priceForSize.Price)<text>zł</text>
+                        </li>
+                    }
+                </ul>
+            </td>
+            <td>
+                <ul class="list-group">
+                    @foreach (var componentsProduct in item.Components)
+                    {
+                        <li class="list-group-item">
+                            @Html.DisplayFor(model => componentsProduct.Component.Name)<text> </text>
+                        </li>
+                    }
+                </ul>
+            </td>
+
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -1,5 +1,5 @@
 ﻿body {
-    background: linear-gradient(to bottom, #000000, #c20202);
+    background: repeating-linear-gradient( 45deg, #3f226a,#590808 200px);
     color: #ffffff;
 }
 .navbar-dark .navbar-nav .nav-link {

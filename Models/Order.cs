@@ -39,6 +39,6 @@ namespace PizzeriaOnline.Models
         [Display(Name = "Status zamówienia:")]
         public OrderStatus Status { get; set; }
 
-        public virtual ICollection<ProductsInOrder> Products { get; set; }
+        public ICollection<ProductsInOrder> Products { get; set; }
     }
 }

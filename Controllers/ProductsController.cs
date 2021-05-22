@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaOnline.Data;
+using PizzeriaOnline.Enums;
 using PizzeriaOnline.Models;
 using PizzeriaOnline.Services;
+using PizzeriaOnline.ViewModels;
 
 namespace PizzeriaOnline.Controllers
 {
@@ -50,9 +52,16 @@ namespace PizzeriaOnline.Controllers
             return View(product);
         }
 
+        private void ComponentsDropDownList(int? selectedcomponent = null)
+        {
+            var components = _productsService.ComponentsDropDownList();
+            ViewBag.ComponentId = new SelectList(components.AsNoTracking(), "Id", "Name", selectedcomponent);
+        }
+
         // GET: Products/Create
         public IActionResult Create()
         {
+            ComponentsDropDownList();
             return View();
         }
 
@@ -60,14 +69,15 @@ namespace PizzeriaOnline.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public IActionResult Create(Product product)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateProductViewModel productmodel)
         {
             if (ModelState.IsValid)
             {
-                _productsService.Create(product);
+                await _productsService.Create(productmodel);
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(productmodel);
         }
 
         // GET: Products/Edit/5
@@ -78,12 +88,26 @@ namespace PizzeriaOnline.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productsService.GetById(id);
+
             if (product == null)
             {
                 return NotFound();
             }
-            return View(product);
+            EditProductViewModel editProductModel = new EditProductViewModel()
+            {
+                Id = product.Id,
+                Availability = product.Availability,
+                ImageMimeType = product.ImageMimeType,
+                ImageName = product.ImageName,
+                PhotoAvatar = product.PhotoAvatar,
+                PhotoFile = product.PhotoFile,
+                Title = product.Title,
+                PricesForSizes = product.PricesForSizes.ToList(),
+                Components = product.Components.ToList()
+            };
+            ComponentsDropDownList();
+            return View(editProductModel);
         }
 
         // POST: Products/Edit/5
@@ -91,34 +115,15 @@ namespace PizzeriaOnline.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Availability,ImageName,ImageMimeType,PhotoFile")] Product product)
+        public async Task<IActionResult> Edit(EditProductViewModel productmodel)
         {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _productsService.Update(productmodel);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(productmodel);
         }
 
         // GET: Products/Delete/5
@@ -150,10 +155,6 @@ namespace PizzeriaOnline.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
 
         //GET_IMAGE
 

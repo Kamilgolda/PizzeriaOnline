@@ -45,7 +45,7 @@ namespace PizzeriaOnline.Data
                );
 
             modelBuilder.Entity<PricesForSizesProduct>().HasData(
-                new PricesForSizesProduct() { Id = 1, ProductId = 1, Size=ProductSize.small, Price= 13.50 },
+                new PricesForSizesProduct() { Id = 1, ProductId = 1, Size=ProductSize.small, Price= 13.5 },
                 new PricesForSizesProduct() { Id = 2, ProductId = 1, Size=ProductSize.medium, Price= 18 },
                 new PricesForSizesProduct() { Id = 3, ProductId = 1, Size=ProductSize.large, Price= 28 }
                 );

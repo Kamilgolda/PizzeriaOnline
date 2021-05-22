@@ -11,7 +11,7 @@ namespace PizzeriaOnline.Models
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int ComponentId { get; set; }
-        public virtual Component Component { get; set; }
+        public Component Component { get; set; }
 
     }
 }

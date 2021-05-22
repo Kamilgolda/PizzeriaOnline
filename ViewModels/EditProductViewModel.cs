@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PizzeriaOnline.Enums;
+using PizzeriaOnline.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzeriaOnline.Models
+namespace PizzeriaOnline.ViewModels
 {
-    public class Product
+    public class EditProductViewModel
     {
         public int Id { get; set; }
 
@@ -27,10 +26,17 @@ namespace PizzeriaOnline.Models
         public byte[] PhotoFile { get; set; }
 
         [Display(Name = "Obrazek:")]
-        [NotMapped]
+
         public IFormFile PhotoAvatar { get; set; }
 
-        public ICollection<PricesForSizesProduct> PricesForSizes { get; set; }
-        public ICollection<ComponentsProduct> Components {get;set;}
-}
+        public List<PricesForSizesProduct> PricesForSizes { get;set;}
+        [Display(Name = "Składniki:")]
+        public List<ComponentsProduct> Components { get; set; }
+
+        [Display(Name = "Wybierz dodatkowe składniki:")]
+        public List<int?> AddComponents { get; set; }
+
+        [Display(Name = "Dodaj składniki:")]
+        public List<string> NewComponents { get; set; }
+    }
 }

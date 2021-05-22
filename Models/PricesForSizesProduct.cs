@@ -17,6 +17,8 @@ namespace PizzeriaOnline.Models
         public ProductSize? Size { get; set; }
 
         [Display(Name = "Cena:")]
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         [Required(ErrorMessage = "Proszę podać cenę")]
         [Range(1, 60)]
         public double Price { get; set; }

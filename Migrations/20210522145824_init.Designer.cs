@@ -9,8 +9,8 @@ using PizzeriaOnline.Data;
 namespace PizzeriaOnline.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210519174423_init2")]
-    partial class init2
+    [Migration("20210522145824_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

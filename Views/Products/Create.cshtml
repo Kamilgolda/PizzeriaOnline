@@ -1,4 +1,4 @@
-﻿@model PizzeriaOnline.Models.Product
+﻿@model PizzeriaOnline.ViewModels.CreateProductViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -14,23 +14,82 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" autofocus placeholder="Wprowadź nazwę" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Availability" /> @Html.DisplayNameFor(model => model.Availability)
-                </label>
+            <div class="form-group">
+                <label><input type="checkbox" class="form-check-input" asp-for="Availability"> Dostępność</label>
             </div>
-            <label asp-for="PhotoAvatar"></label>
-            <input asp-for="PhotoAvatar" type="file" />
-
-            <label asp-for="PricesForSizes"></label>
-            
+            <div class="form-group">
+                <label asp-for="PhotoAvatar" class=".control-label"></label>
+                <input asp-for="PhotoAvatar" type="file" />
+                <span asp-validation-for="PhotoAvatar" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="PriceForSmall" class="control-label"></label>
+                <input asp-for="PriceForSmall" placeholder="Wprowadź cenę" class="form-control" />
+                <span asp-validation-for="PriceForSmall" class="text-danger"></span>
+
+                <label asp-for="PriceForMedium" class="control-label"></label>
+                <input asp-for="PriceForMedium" placeholder="Wprowadź cenę" class="form-control" />
+                <span asp-validation-for="PriceForMedium" class="text-danger"></span>
+
+                <label asp-for="PriceForLarge" class="control-label"></label>
+                <input asp-for="PriceForLarge" placeholder="Wprowadź cenę" class="form-control" />
+                <span asp-validation-for="PriceForMedium" class="text-danger"></span>
+
             </div>
+
+            <div class="form-group">
+
+                <label asp-for="Components" class="control-label"></label>
+                <select asp-for="Components[0]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[1]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[2]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[3]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[4]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[5]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[6]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[7]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[8]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+                <select asp-for="Components[9]" class="form-control" asp-items="ViewBag.ComponentId">
+                    <option value="">-- Wybierz składnik --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewComponents" class="control-label"></label>
+                <input asp-for="NewComponents[0]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[1]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[2]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[3]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[4]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[5]" placeholder="Podaj nazwę składnika" class="form-control" />
+            </div>
+
+
+                <div class="form-group">
+                    <input type="submit" value="Dodaj" class="btn btn-primary" />
+                </div>
         </form>
     </div>
 </div>

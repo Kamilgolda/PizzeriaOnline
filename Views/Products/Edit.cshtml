@@ -1,7 +1,8 @@
-﻿@model PizzeriaOnline.Models.Product
+﻿@model PizzeriaOnline.ViewModels.EditProductViewModel
 
 @{
     ViewData["Title"] = "Edit";
+    int i = 0;
 }
 
 <h1>Edit</h1>
@@ -9,7 +10,7 @@
 <h4>Product</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -19,28 +20,141 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Availability" /> @Html.DisplayNameFor(model => model.Availability)
-                </label>
+                <label><input type="checkbox" class="form-check-input" asp-for="Availability"> Dostępność</label>
             </div>
             <div class="form-group">
-                <label asp-for="ImageName" class="control-label"></label>
-                <input asp-for="ImageName" class="form-control" />
-                <span asp-validation-for="ImageName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageMimeType" class="control-label"></label>
-                <input asp-for="ImageMimeType" class="form-control" />
-                <span asp-validation-for="ImageMimeType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhotoFile" class="control-label"></label>
-                <input asp-for="PhotoFile" class="form-control" />
+                <input type="hidden" asp-for="ImageName" />
+                <input type="hidden" asp-for="ImageMimeType" />
+                <input type="hidden" asp-for="PhotoFile" />
+                @if (Model.ImageName != null)
+                {
+                    <div class="media">
+                        <img class="img-thumbnail" src="@Url.Action("GetImage", "Products", new { Id = Model.Id })" style="width:150px" />
+                    </div>
+                }
+                <label asp-for="PhotoAvatar"></label>
+                <input asp-for="PhotoAvatar" type="hidden" class="form-control-file" />
                 <span asp-validation-for="PhotoFile" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-row">
+                <div class="col">
+                    <input asp-for="PricesForSizes[0].Id" type="hidden" />
+                    <input asp-for="PricesForSizes[0].ProductId" type="hidden" />
+                    <input asp-for="PricesForSizes[0].Size" type="hidden" />
+                    <h3>Mała</h3>
+                    <label asp-for="PricesForSizes[0].Price" class="control-label"></label>
+                    <input asp-for="PricesForSizes[0].Price" class="form-control" />
+                    <span asp-validation-for="PricesForSizes[0].Price" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input asp-for="PricesForSizes[1].Id" type="hidden" />
+                    <input asp-for="PricesForSizes[1].ProductId" type="hidden" />
+                    <input asp-for="PricesForSizes[1].Size" type="hidden" />
+                    <h3>Średnia</h3>
+                    <label asp-for="PricesForSizes[1].Price" class="control-label"></label>
+                    <input asp-for="PricesForSizes[1].Price" class="form-control" />
+                    <span asp-validation-for="PricesForSizes[1].Price" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input asp-for="PricesForSizes[2].Id" type="hidden" />
+                    <input asp-for="PricesForSizes[2].ProductId" type="hidden" />
+                    <input asp-for="PricesForSizes[2].Size" type="hidden" />
+                    <h3>Duża</h3>
+                    <label asp-for="PricesForSizes[2].Price" class="control-label"></label>
+                    <input asp-for="PricesForSizes[2].Price" class="form-control" />
+                    <span asp-validation-for="PricesForSizes[2].Price" class="text-danger"></span>
+                </div>
             </div>
+            <div class="form-row">
+                <div class="col">
+                    <label asp-for="Components" class="control-label"></label>
+                    @for (int j = 0; j < Model.Components.Count; j++)
+                    {
+                        <input asp-for="Components[i]" type="hidden" />
+                        <input asp-for="Components[i].Id" type="hidden" />
+                        <input asp-for="Components[i].ProductId" type="hidden" />
+                        <select asp-for="Components[i].ComponentId" class="form-control" asp-items="ViewBag.ComponentId">
+                        </select>
+                        i++;
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddComponents" class="control-label"></label>
+            </div>
+
+            <div class="form-row">
+                    <div class="col">
+                        <select asp-for="AddComponents[0]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <select asp-for="AddComponents[1]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <select asp-for="AddComponents[2]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <select asp-for="AddComponents[3]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <select asp-for="AddComponents[4]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="form-row">
+                        <div class="col">
+                            <select asp-for="AddComponents[5]" class="form-control" asp-items="ViewBag.ComponentId">
+                                <option value="">-- Wybierz składnik --</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="AddComponents[6]" class="form-control" asp-items="ViewBag.ComponentId">
+                                <option value="">-- Wybierz składnik --</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="AddComponents[7]" class="form-control" asp-items="ViewBag.ComponentId">
+                                <option value="">-- Wybierz składnik --</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="AddComponents[8]" class="form-control" asp-items="ViewBag.ComponentId">
+                                <option value="">-- Wybierz składnik --</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="AddComponents[9]" class="form-control" asp-items="ViewBag.ComponentId">
+                                <option value="">-- Wybierz składnik --</option>
+                            </select>
+                        </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewComponents" class="control-label"></label>
+                <input asp-for="NewComponents[0]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[1]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[2]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[3]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[4]" placeholder="Podaj nazwę składnika" class="form-control" />
+                <input asp-for="NewComponents[5]" placeholder="Podaj nazwę składnika" class="form-control" />
+            </div>    
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
         </form>
     </div>
 </div>
@@ -48,7 +162,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
