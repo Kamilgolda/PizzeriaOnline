@@ -168,6 +168,81 @@ namespace PizzeriaOnline.Migrations
                         {
                             Id = 2,
                             Name = "ser mozzarella"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "szynka"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "pieczarki"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "kukurydza"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "salami"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "pomidorki koktajlowe"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "czarne oliwki"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "cebula czerwona"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "ser wędzony"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "ser pleśniowy"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "parmezan"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "kurczak"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "sos czosnkowy"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "pomidor suszony"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "szczypiorek"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "rukola"
                         });
                 });
 
@@ -203,6 +278,198 @@ namespace PizzeriaOnline.Migrations
                             Id = 2,
                             ComponentId = 2,
                             ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ComponentId = 1,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ComponentId = 2,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ComponentId = 3,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ComponentId = 4,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ComponentId = 5,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ComponentId = 1,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ComponentId = 2,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ComponentId = 6,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ComponentId = 7,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ComponentId = 8,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ComponentId = 9,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ComponentId = 1,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ComponentId = 2,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ComponentId = 10,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 17,
+                            ComponentId = 11,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 18,
+                            ComponentId = 12,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 19,
+                            ComponentId = 1,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 20,
+                            ComponentId = 2,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 21,
+                            ComponentId = 13,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 22,
+                            ComponentId = 4,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 23,
+                            ComponentId = 5,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 24,
+                            ComponentId = 1,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 25,
+                            ComponentId = 2,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 26,
+                            ComponentId = 6,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 27,
+                            ComponentId = 11,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 28,
+                            ComponentId = 7,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 29,
+                            ComponentId = 14,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 30,
+                            ComponentId = 13,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 31,
+                            ComponentId = 15,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 32,
+                            ComponentId = 9,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 33,
+                            ComponentId = 16,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 34,
+                            ComponentId = 17,
+                            ProductId = 7
                         });
                 });
 
@@ -294,8 +561,134 @@ namespace PizzeriaOnline.Migrations
                         new
                         {
                             Id = 3,
-                            Price = 28.0,
+                            Price = 26.0,
                             ProductId = 1,
+                            Size = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Price = 15.0,
+                            ProductId = 2,
+                            Size = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Price = 24.0,
+                            ProductId = 2,
+                            Size = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Price = 32.0,
+                            ProductId = 2,
+                            Size = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Price = 16.0,
+                            ProductId = 3,
+                            Size = 0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Price = 24.0,
+                            ProductId = 3,
+                            Size = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Price = 33.0,
+                            ProductId = 3,
+                            Size = 2
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Price = 17.0,
+                            ProductId = 4,
+                            Size = 0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Price = 25.0,
+                            ProductId = 4,
+                            Size = 1
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Price = 35.0,
+                            ProductId = 4,
+                            Size = 2
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Price = 15.0,
+                            ProductId = 5,
+                            Size = 0
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Price = 23.0,
+                            ProductId = 5,
+                            Size = 1
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Price = 30.0,
+                            ProductId = 5,
+                            Size = 2
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Price = 18.0,
+                            ProductId = 6,
+                            Size = 0
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Price = 26.0,
+                            ProductId = 6,
+                            Size = 1
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Price = 35.0,
+                            ProductId = 6,
+                            Size = 2
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Price = 19.0,
+                            ProductId = 7,
+                            Size = 0
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Price = 26.0,
+                            ProductId = 7,
+                            Size = 1
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Price = 37.0,
+                            ProductId = 7,
                             Size = 2
                         });
                 });
@@ -335,6 +728,54 @@ namespace PizzeriaOnline.Migrations
                             ImageMimeType = "image/jpeg",
                             ImageName = "margherita.jpg",
                             Title = "MARGHERITA"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Availability = true,
+                            ImageMimeType = "image/jpeg",
+                            ImageName = "vesuvio.jpg",
+                            Title = "VESUVIO"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Availability = true,
+                            ImageMimeType = "image/jpeg",
+                            ImageName = "salami.jpg",
+                            Title = "SALAMI"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Availability = true,
+                            ImageMimeType = "image/jpeg",
+                            ImageName = "formaggi.jpg",
+                            Title = "QUATTRO FROMAGGI"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Availability = true,
+                            ImageMimeType = "image/jpeg",
+                            ImageName = "la_nonna.jpg",
+                            Title = "LA NONNA"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Availability = true,
+                            ImageMimeType = "image/jpeg",
+                            ImageName = "palermo.jpg",
+                            Title = "PALERMO"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Availability = true,
+                            ImageMimeType = "image/jpeg",
+                            ImageName = "italiana.jpg",
+                            Title = "ITALIANA"
                         });
                 });
 
