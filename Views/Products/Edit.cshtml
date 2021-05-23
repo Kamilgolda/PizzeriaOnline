@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-8">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -26,15 +26,22 @@
                 <input type="hidden" asp-for="ImageName" />
                 <input type="hidden" asp-for="ImageMimeType" />
                 <input type="hidden" asp-for="PhotoFile" />
-                @if (Model.ImageName != null)
-                {
-                    <div class="media">
-                        <img class="img-thumbnail" src="@Url.Action("GetImage", "Products", new { Id = Model.Id })" style="width:150px" />
-                    </div>
-                }
+                <input type="hidden" asp-for="ImageName" />
                 <label asp-for="PhotoAvatar"></label>
+                <div class="form-row">
+                    @if (Model.ImageName != null)
+                    {
+                        <div class="col-sm-5">
+                            <img class="img-thumbnail" src="@Url.Action("GetImage", "Products", new { Id = Model.Id })" />
+                        </div>
+                    }
+                    <div class="col">
+                        <button type="button" class="btn btn-success" onclick="var children = document.getElementById('PhotoAvatar').firstElementChild.setAttribute('type', 'file')">Dodaj/Zmień obrazek</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="PhotoAvatar">
                 <input asp-for="PhotoAvatar" type="hidden" class="form-control-file" />
-                <span asp-validation-for="PhotoFile" class="text-danger"></span>
             </div>
             <div class="form-row">
                 <div class="col">
@@ -65,96 +72,152 @@
                     <span asp-validation-for="PricesForSizes[2].Price" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col">
-                    <label asp-for="Components" class="control-label"></label>
-                    @for (int j = 0; j < Model.Components.Count; j++)
-                    {
-                        <input asp-for="Components[i]" type="hidden" />
-                        <input asp-for="Components[i].Id" type="hidden" />
-                        <input asp-for="Components[i].ProductId" type="hidden" />
-                        <select asp-for="Components[i].ComponentId" class="form-control" asp-items="ViewBag.ComponentId">
-                        </select>
-                        i++;
-                    }
-                </div>
+            <div class="form-group">
+                <label asp-for="Components" class="control-label"></label>
+                @for (int j = 0; j < Model.Components.Count; j++)
+                {
+                    <input asp-for="Components[i]" type="hidden" />
+                    <input asp-for="Components[i].Id" type="hidden" />
+                    <input asp-for="Components[i].ProductId" type="hidden" />
+                    <div class="form-row">
+                        <div class="col">
+                            <select asp-for="Components[i].ComponentId" class="form-control" asp-items="ViewBag.ComponentId">
+                            </select>
+                        </div>
+                        <div class="col">
+                            <button type="button" onclick="this.parentElement.parentElement.remove()" class="btn btn-danger">usuń</button>
+                        </div>
+                    </div>
+                    i++;
+                }
             </div>
             <div class="form-group">
                 <label asp-for="AddComponents" class="control-label"></label>
-            </div>
 
-            <div class="form-row">
+                <div class="form-row">
                     <div class="col">
                         <select asp-for="AddComponents[0]" class="form-control" asp-items="ViewBag.ComponentId">
                             <option value="">-- Wybierz składnik --</option>
                         </select>
                     </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent1').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
 
+                <div class="form-row d-none" id="AddComponent1">
                     <div class="col">
                         <select asp-for="AddComponents[1]" class="form-control" asp-items="ViewBag.ComponentId">
                             <option value="">-- Wybierz składnik --</option>
                         </select>
                     </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent2').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
 
+                <div class="form-row d-none" id="AddComponent2">
                     <div class="col">
                         <select asp-for="AddComponents[2]" class="form-control" asp-items="ViewBag.ComponentId">
                             <option value="">-- Wybierz składnik --</option>
                         </select>
                     </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent3').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
 
+                <div class="form-row d-none" id="AddComponent3">
                     <div class="col">
                         <select asp-for="AddComponents[3]" class="form-control" asp-items="ViewBag.ComponentId">
                             <option value="">-- Wybierz składnik --</option>
                         </select>
                     </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent4').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
 
+                <div class="form-row d-none" id="AddComponent4">
                     <div class="col">
                         <select asp-for="AddComponents[4]" class="form-control" asp-items="ViewBag.ComponentId">
                             <option value="">-- Wybierz składnik --</option>
                         </select>
                     </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent5').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
+
+                <div class="form-row d-none" id="AddComponent5">
+                    <div class="col">
+                        <select asp-for="AddComponents[5]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent6').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
+
+                <div class="form-row d-none" id="AddComponent6">
+                    <div class="col">
+                        <select asp-for="AddComponents[6]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent7').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
+
+                <div class="form-row d-none" id="AddComponent7">
+                    <div class="col">
+                        <select asp-for="AddComponents[7]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent8').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
+
+                <div class="form-row d-none" id="AddComponent8">
+                    <div class="col">
+                        <select asp-for="AddComponents[8]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('AddComponent9').classList.remove('d-none'); this.remove()">dodaj kolejny</button>
+                    </div>
+                </div>
+
+                <div class="form-row d-none" id="AddComponent9">
+                    <div class="col">
+                        <select asp-for="AddComponents[9]" class="form-control" asp-items="ViewBag.ComponentId">
+                            <option value="">-- Wybierz składnik --</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
             </div>
-            <div class="form-row">
-                        <div class="col">
-                            <select asp-for="AddComponents[5]" class="form-control" asp-items="ViewBag.ComponentId">
-                                <option value="">-- Wybierz składnik --</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select asp-for="AddComponents[6]" class="form-control" asp-items="ViewBag.ComponentId">
-                                <option value="">-- Wybierz składnik --</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select asp-for="AddComponents[7]" class="form-control" asp-items="ViewBag.ComponentId">
-                                <option value="">-- Wybierz składnik --</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select asp-for="AddComponents[8]" class="form-control" asp-items="ViewBag.ComponentId">
-                                <option value="">-- Wybierz składnik --</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select asp-for="AddComponents[9]" class="form-control" asp-items="ViewBag.ComponentId">
-                                <option value="">-- Wybierz składnik --</option>
-                            </select>
-                        </div>
-            </div>
+
 
             <div class="form-group">
                 <label asp-for="NewComponents" class="control-label"></label>
-                <input asp-for="NewComponents[0]" placeholder="Podaj nazwę składnika" class="form-control" />
-                <input asp-for="NewComponents[1]" placeholder="Podaj nazwę składnika" class="form-control" />
-                <input asp-for="NewComponents[2]" placeholder="Podaj nazwę składnika" class="form-control" />
-                <input asp-for="NewComponents[3]" placeholder="Podaj nazwę składnika" class="form-control" />
-                <input asp-for="NewComponents[4]" placeholder="Podaj nazwę składnika" class="form-control" />
-                <input asp-for="NewComponents[5]" placeholder="Podaj nazwę składnika" class="form-control" />
-            </div>    
+                <input asp-for="NewComponents[0]" placeholder="Podaj nazwę składnika" oninput="document.getElementById('NewComponent1').classList.remove('d-none')" class="form-control" />
+                <input id="NewComponent1" asp-for="NewComponents[1]" placeholder="Podaj nazwę składnika" oninput="document.getElementById('NewComponent2').classList.remove('d-none')" class="form-control d-none" />
+                <input id="NewComponent2" asp-for="NewComponents[2]" placeholder="Podaj nazwę składnika" oninput="document.getElementById('NewComponent3').classList.remove('d-none')" class="form-control d-none" />
+                <input id="NewComponent3" asp-for="NewComponents[3]" placeholder="Podaj nazwę składnika" oninput="document.getElementById('NewComponent4').classList.remove('d-none')" class="form-control d-none" />
+                <input id="NewComponent4" asp-for="NewComponents[4]" placeholder="Podaj nazwę składnika" oninput="document.getElementById('NewComponent5').classList.remove('d-none')" class="form-control d-none" />
+                <input id="NewComponent5" asp-for="NewComponents[5]" placeholder="Podaj nazwę składnika" class="form-control d-none" />
+            </div>
 
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>

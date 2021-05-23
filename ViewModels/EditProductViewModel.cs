@@ -20,13 +20,11 @@ namespace PizzeriaOnline.ViewModels
         [Display(Name = "Dostępność:")]
         public bool Availability { get; set; }
 
-        [Display(Name = "Obrazek:")]
         public string ImageName { get; set; }
         public string ImageMimeType { get; set; }
         public byte[] PhotoFile { get; set; }
 
         [Display(Name = "Obrazek:")]
-
         public IFormFile PhotoAvatar { get; set; }
 
         public List<PricesForSizesProduct> PricesForSizes { get;set;}

@@ -100,7 +100,6 @@ namespace PizzeriaOnline.Controllers
                 Availability = product.Availability,
                 ImageMimeType = product.ImageMimeType,
                 ImageName = product.ImageName,
-                PhotoAvatar = product.PhotoAvatar,
                 PhotoFile = product.PhotoFile,
                 Title = product.Title,
                 PricesForSizes = product.PricesForSizes.ToList(),

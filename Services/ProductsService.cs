@@ -136,19 +136,25 @@ namespace PizzeriaOnline.Services
 
         public async Task Update(EditProductViewModel productmodel)
         {
-            List<ComponentsProduct> componentsProductList = new List<ComponentsProduct>();
             foreach (var componentProduct in productmodel.Components)
             {
-                componentsProductList.Add(componentProduct);
+                if (componentProduct.ComponentId == 0)
+                {
+                    ComponentsProduct cp = await _context.ComponentsProducts.FirstOrDefaultAsync(o => o.Id == componentProduct.Id);
+                    _context.ComponentsProducts.Remove(cp);
+
+                }
             }
 
-            foreach (int? componentProduct in productmodel.AddComponents)
+            List<ComponentsProduct> componentsProductList = await _context.ComponentsProducts.Include(o => o.Component).Where(o => o.ProductId == productmodel.Id).ToListAsync();
+
+            foreach (int? componentId in productmodel.AddComponents)
             {
-                if (componentProduct != null) {
+                if (componentId != null) {
                     bool flag = false;
                     foreach (var c in componentsProductList)
                     {
-                        if(c.ComponentId == (int)componentProduct)
+                        if(c.ComponentId == (int)componentId)
                         {
                             flag = true;
                             break;
@@ -158,34 +164,60 @@ namespace PizzeriaOnline.Services
                     {
                         componentsProductList.Add(new ComponentsProduct()
                         {
-                            ComponentId = (int)componentProduct
+                            ComponentId = (int)componentId
                         });
                     }
                 } 
             }
 
+            var componentsincontext = ComponentsDropDownList();
             foreach (string componentProduct in productmodel.NewComponents)
             {
                 if (componentProduct != null) {
-
-                    componentsProductList.Add(new ComponentsProduct()
-                    {
-                        Component = new Component()
+                    bool flag = false;
+                        foreach (var c in componentsincontext)
                         {
-                            Name = componentProduct.ToLower()
+                            if (componentProduct == c.Name) 
+                            {
+                            flag = true;
+                            break;
+                            }
                         }
-                    });
+                    if (flag == false)
+                    {
+                        bool flag2 = false;
+                        foreach( var cmp in componentsProductList)
+                        {
+                            if(cmp.Component.Name == componentProduct.ToLower())
+                            {
+                                flag2 = true;
+                                break;
+                            }
+                        }
+
+                        if(flag2 == false)
+                        {
+                            componentsProductList.Add(new ComponentsProduct()
+                            {
+                                Component = new Component()
+                                {
+                                    Name = componentProduct.ToLower()
+                                }
+                            });
+                        }
+                    } 
                 } 
             }
+            
+            componentsProductList = componentsProductList.Distinct().ToList();
 
             Product product = new Product()
             {
                 Id = productmodel.Id,
                 Availability = productmodel.Availability,
-                ImageMimeType = productmodel.ImageMimeType,
                 ImageName = productmodel.ImageName,
-                PhotoAvatar = productmodel.PhotoAvatar,
-                PhotoFile = productmodel.PhotoFile,
+                ImageMimeType=productmodel.ImageMimeType,
+                PhotoFile=productmodel.PhotoFile,
                 PricesForSizes = productmodel.PricesForSizes,
                 Title = productmodel.Title,
                 Components = componentsProductList
@@ -194,13 +226,13 @@ namespace PizzeriaOnline.Services
 
 
 
-            if (product.PhotoAvatar != null && product.PhotoAvatar.Length > 0)
+            if (productmodel.PhotoAvatar != null && productmodel.PhotoAvatar.Length > 0)
             {
-                product.ImageMimeType = product.PhotoAvatar.ContentType;
-                product.ImageName = Path.GetFileName(product.PhotoAvatar.FileName);
+                product.ImageMimeType = productmodel.PhotoAvatar.ContentType;
+                product.ImageName = Path.GetFileName(productmodel.PhotoAvatar.FileName);
                 using (var memoryStream = new MemoryStream())
                 {
-                    product.PhotoAvatar.CopyTo(memoryStream);
+                    productmodel.PhotoAvatar.CopyTo(memoryStream);
                     product.PhotoFile = memoryStream.ToArray();
                 }
             }
