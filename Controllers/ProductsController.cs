@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzeriaOnline.Data;
 using PizzeriaOnline.Enums;
 using PizzeriaOnline.Models;
-using PizzeriaOnline.Services;
+using PizzeriaOnline.Repositories;
 using PizzeriaOnline.ViewModels;
 
 namespace PizzeriaOnline.Controllers
@@ -18,20 +18,20 @@ namespace PizzeriaOnline.Controllers
     public class ProductsController : Controller
     {
         private readonly Context _context;
-        private readonly IProductsService _productsService;
-        private readonly IHostingEnvironment _environment;
+        private readonly IProductsRepository _productsRepository;
+        private readonly IWebHostEnvironment _environment;
 
-        public ProductsController(Context context, IProductsService productsService, IHostingEnvironment environment)
+        public ProductsController(Context context, IProductsRepository productsRepository, IWebHostEnvironment environment)
         {
             _context = context;
-            _productsService = productsService;
+            _productsRepository = productsRepository;
             _environment = environment;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _productsService.GetAll());
+            return View(await _productsRepository.GetAll());
         }
 
         // GET: Products/Details/5
@@ -42,7 +42,7 @@ namespace PizzeriaOnline.Controllers
                 return NotFound();
             }
 
-            var product = await _productsService.GetById(id);
+            var product = await _productsRepository.GetById(id);
             
             if (product == null)
             {
@@ -54,7 +54,7 @@ namespace PizzeriaOnline.Controllers
 
         private void ComponentsDropDownList(int? selectedcomponent = null)
         {
-            var components = _productsService.ComponentsDropDownList();
+            var components = _productsRepository.ComponentsDropDownList();
             ViewBag.ComponentId = new SelectList(components.AsNoTracking(), "Id", "Name", selectedcomponent);
         }
 
@@ -74,7 +74,7 @@ namespace PizzeriaOnline.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _productsService.Create(productmodel);
+                await _productsRepository.Create(productmodel);
                 return RedirectToAction(nameof(Index));
             }
             return View(productmodel);
@@ -88,7 +88,7 @@ namespace PizzeriaOnline.Controllers
                 return NotFound();
             }
 
-            var product = await _productsService.GetById(id);
+            var product = await _productsRepository.GetById(id);
 
             if (product == null)
             {
@@ -118,7 +118,7 @@ namespace PizzeriaOnline.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _productsService.Update(productmodel);
+                await _productsRepository.Update(productmodel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -159,7 +159,7 @@ namespace PizzeriaOnline.Controllers
 
         public async Task<IActionResult> GetImage(int id)
         {
-            Product requested = await _productsService.GetById(id);
+            Product requested = await _productsRepository.GetById(id);
             if (requested != null)
             {
                 string webRootpath = _environment.WebRootPath;

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzeriaOnline.Services
+namespace PizzeriaOnline.Repositories
 {
-    public interface IProductsService
+    public interface IProductsRepository
     {
         IQueryable<Component> ComponentsDropDownList();
         Task Create(CreateProductViewModel productmodel);

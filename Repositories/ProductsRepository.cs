@@ -11,13 +11,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzeriaOnline.Services
+namespace PizzeriaOnline.Repositories
 {
-    public class ProductsService : IProductsService
+    public class ProductsRepository : IProductsRepository
     {
         private readonly Context _context;
 
-        public ProductsService(Context context)
+        public ProductsRepository(Context context)
         {
             _context = context;
         }

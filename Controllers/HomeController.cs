@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using PizzeriaOnline.Data;
 using PizzeriaOnline.Models;
 using PizzeriaOnline.Models.Dto;
-using PizzeriaOnline.Services;
+using PizzeriaOnline.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,19 +17,19 @@ namespace PizzeriaOnline.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IProductsService _productsService;
-        private readonly IHostingEnvironment _environment;
+        private readonly IProductsRepository _productsRepository;
+        private readonly IWebHostEnvironment _environment;
 
-        public HomeController(ILogger<HomeController> logger, IProductsService productsService, IHostingEnvironment environment)
+        public HomeController(ILogger<HomeController> logger, IProductsRepository productsRepository, IWebHostEnvironment environment)
         {
             _logger = logger;
-            _productsService = productsService;
+            _productsRepository = productsRepository;
             _environment = environment;
         }
 
         public IActionResult Index()
         {
-            var listaproduktow = _productsService.GetAll();
+            var listaproduktow = _productsRepository.GetAll();
             return View(listaproduktow);
         }
 
@@ -40,7 +40,7 @@ namespace PizzeriaOnline.Controllers
 
         public async Task<IActionResult> GetImage(int id)
         {
-            Product requested = await _productsService.GetById(id);
+            Product requested = await _productsRepository.GetById(id);
             if (requested != null)
             {
                 string webRootpath = _environment.WebRootPath;

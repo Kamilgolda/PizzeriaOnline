@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzeriaOnline.Data;
 using PizzeriaOnline.Models;
 using PizzeriaOnline.Models.Dto;
-using PizzeriaOnline.Services;
+using PizzeriaOnline.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +18,12 @@ namespace PizzeriaOnline.Controllers
     [ApiController]
     public class APIController : ControllerBase
     {
-        private readonly IProductsService _service;
+        private readonly IProductsRepository _repository;
         private readonly IMapper _mapper;
 
-        public APIController(IProductsService service, IMapper mapper)
+        public APIController(IProductsRepository repository, IMapper mapper)
         {
-            _service = service;
+            _repository = repository;
             _mapper = mapper;
         }
 
@@ -31,7 +31,7 @@ namespace PizzeriaOnline.Controllers
         [HttpGet]
         public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            var products =await _service.GetAll();
+            var products =await _repository.GetAll();
 
             return _mapper.Map<List<ProductDto>>(products);
         }
@@ -39,7 +39,7 @@ namespace PizzeriaOnline.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> Get(int id)
         {
-            var product =await _service.GetById(id);
+            var product =await _repository.GetById(id);
             return (product is null) ? NotFound() : Ok(_mapper.Map<ProductDto>(product));
         }
 

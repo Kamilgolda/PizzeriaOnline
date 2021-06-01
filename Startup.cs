@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PizzeriaOnline.Data;
 using PizzeriaOnline.Models;
-using PizzeriaOnline.Services;
+using PizzeriaOnline.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace PizzeriaOnline
 
             services.AddDbContext<Context>();
             services.AddAutoMapper(this.GetType().Assembly);
-            services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddSwaggerGen();
         }
 
