@@ -1,0 +1,172 @@
+﻿/*WYBOR ROZMIARU I ILOSCI*/
+#cart {
+    padding-top: 100px;
+    color: black;
+}
+
+.show-cart li {
+    display: flex;
+}
+/***************************/
+
+
+/*KOSZYK*/
+#shopping-cart-button{
+    position:fixed;
+    top:10px;
+    right:10px;
+}
+
+.cart {
+    padding: 1em 0;
+}
+
+    .cart .items {
+        display: block;
+        width: 100%;
+        vertical-align: middle;
+        padding: 1.5em;
+        border-bottom: 1px solid #fafafa;
+    }
+
+        .cart .items.even {
+            background: #fafafa;
+        }
+
+        .cart .items .infoWrap {
+            display: table;
+            width: 100%;
+        }
+
+        .cart .items .cartSection {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+            .cart .items .cartSection .itemNumber {
+                font-size: 0.75em;
+                color: #777;
+                margin-bottom: 0.5em;
+            }
+
+            .cart .items .cartSection h3 {
+                font-size: 1em;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+            }
+
+            .cart .items .cartSection p {
+                display: inline-block;
+                font-size: 0.85em;
+                color: #777;
+                font-family: 'Montserrat', sans-serif;
+            }
+
+                .cart .items .cartSection p .quantity {
+                    font-weight: bold;
+                    color: #333;
+                }
+
+
+            .cart .items .cartSection .itemImg {
+                width: 4em;
+                float: left;
+            }
+
+            .cart .items .cartSection.qtyWrap, .cart .items .cartSection.prodTotal {
+                text-align: center;
+            }
+
+                .cart .items .cartSection.qtyWrap p, .cart .items .cartSection.prodTotal p {
+                    font-weight: bold;
+                    font-size: 1.25em;
+                }
+
+            .cart .items .cartSection input.qty {
+                width: 2em;
+                text-align: center;
+                font-size: 1em;
+                padding: 0.25em;
+                margin: 1em 0.5em 0 0;
+            }
+
+            .cart .items .cartSection .itemImg {
+                width: 8em;
+                display: inline;
+                padding-right: 1em;
+            }
+
+a.remove {
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-weight: bold;
+    background: #e0e0e0;
+    padding: 0.5em;
+    font-size: 0.75em;
+    display: inline-block;
+    border-radius: 100%;
+    line-height: 0.85;
+    -webkit-transition: all 0.25s linear;
+    -moz-transition: all 0.25s linear;
+    -ms-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+}
+
+    a.remove:hover {
+        background: #f30;
+    }
+
+.subtotal {
+    float: right;
+    width: 35%;
+}
+
+    .subtotal .totalRow {
+        padding: 0.5em;
+        text-align: right;
+    }
+
+        .subtotal .totalRow.final {
+            font-size: 1.25em;
+            font-weight: bold;
+        }
+
+        .subtotal .totalRow span {
+            display: inline-block;
+            padding: 0 0 0 1em;
+            text-align: right;
+        }
+
+        .subtotal .totalRow .label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            color: #777;
+        }
+
+        .subtotal .totalRow .value {
+            letter-spacing: -0.025em;
+            width: 35%;
+        }
+
+
+@media only screen and (max-width: 39.375em) {
+    .cart .items .cartSection {
+        width: 90%;
+        display: block;
+        float: left;
+    }
+
+        .cart .items .cartSection.prodTotal, .cart .items .cartSection.removeWrap {
+            display: none;
+        }
+
+        .cart .items .cartSection .itemImg {
+            width: 25%;
+        }
+}
+/***************************/
