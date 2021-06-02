@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PizzeriaOnline.Models.Product>
+
+@{
+    ViewData["Title"] = "Menu";
+}
+<div class="p-4 bg-dark rounded">
+    <div class="row border-bottom">
+        <div class="col-7"><h1>@ViewData["Title"]</h1></div>
+        <div class="col-1"><strong>mała</strong> <p>32cm</p></div>
+        <div class="col-1"><strong>średnia</strong> <p>42cm</p></div>
+        <div class="col-1"><strong>duża</strong> <p>50cm</p></div>
+        <div class="col-2"></div>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="row border-bottom p-3">
+            <div class="col-2">
+                @if (item.ImageName != null)
+                {
+                    <img class="img-thumbnail" src="@Url.Action("GetImage", "Products", new { Id = item.Id })" />
+                }
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+                </div>
+                <div class="row">
+                    @foreach (var componentsProduct in item.Components)
+                    {
+                        if (componentsProduct == item.Components.Last())
+                        {
+                            @Html.DisplayFor(model => componentsProduct.Component.Name)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => componentsProduct.Component.Name)<text>, </text>
+                        }
+                    }
+                </div>
+            </div>
+            @foreach (var priceForSize in item.PricesForSizes)
+            {
+                <div class="col-1 align-self-center">
+                    @Html.DisplayFor(model => priceForSize.Price)
+                </div>
+            }
+            <div class="col-2 align-self-center">
+                <button type="button" class="btn btn-warning">Dodaj do koszyka</button>
+            </div>
+        </div>
+    }
+</div>

@@ -33,6 +33,12 @@ namespace PizzeriaOnline.Controllers
             return View(listaproduktow);
         }
 
+        public async Task<IActionResult> Menu()
+        {
+            var listaproduktow = await _productsRepository.GetAll();
+            return View(listaproduktow);
+        }
+
         public IActionResult Privacy()
         {
             return View();
