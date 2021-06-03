@@ -56,7 +56,7 @@
 </div>
 
 
-<button type="button" class="btn btn-primary btn-lg" id="shopping-cart-button" data-toggle="modal" data-target="#shopping-cart">Koszyk (<span class="total-count"></span>)</button>
+<button type="button" class="btn btn-primary btn-lg" id="shopping-cart-button" data-toggle="modal" data-target="#shopping-cart" onclick="displayShoppingCart()">Koszyk (<span class="total-count"></span>)</button>
 
 <!-- Modal -->
 <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,104 +103,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalToggleLabel">Koszyk</h5>
-                <a href="#" class="continue">Kontynuuj zakupy</a>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="cart">
                     <ul class="cartWrap">
-                        <li class="items odd">
-                            <div class="infoWrap">
-                                <div class="cartSection">
-                                    <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg" />
-                                    <h3>Item Name 1</h3>
-
-                                    <p> <input type="text" class="qty" placeholder="3" /> x $5.00</p>
-                                </div>
-
-                                <div class="prodTotal cartSection">
-                                    <p>$15.00</p>
-                                </div>
-                                <div class="cartSection removeWrap">
-                                    <a href="#" class="remove">x</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="items even">
-
-                            <div class="infoWrap">
-                                <div class="cartSection">
-
-                                    <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg" />
-                                    <h3>Item Name 1</h3>
-
-                                    <p> <input type="text" class="qty" placeholder="3" /> x $5.00</p>
-                                </div>
-
-
-                                <div class="prodTotal cartSection">
-                                    <p>$15.00</p>
-                                </div>
-                                <div class="cartSection removeWrap">
-                                    <a href="#" class="remove">x</a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="items odd">
-                            <div class="infoWrap">
-                                <div class="cartSection">
-
-                                    <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg" />
-                                    <h3>Item Name 1</h3>
-
-                                    <p> <input type="text" class="qty" placeholder="3" /> x $5.00</p>
-
-                                </div>
-
-                                <div class="prodTotal cartSection">
-                                    <p>$15.00</p>
-                                </div>
-                                <div class="cartSection removeWrap">
-                                    <a href="#" class="remove">x</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="items even">
-                            <div class="infoWrap">
-                                <div class="cartSection info">
-
-                                    <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg" />
-                                    <h3>Item Name 1</h3>
-
-                                    <p> <input type="text" class="qty" placeholder="3" /> x $5.00</p>
-                                </div>
-
-
-                                <div class="prodTotal cartSection">
-                                    <p>$15.00</p>
-                                </div>
-
-                                <div class="cartSection removeWrap">
-                                    <a href="#" class="remove">x</a>
-                                </div>
-                            </div>
-                        </li>
-
-
-                        <!--<li class="items even">Item 2</li>-->
-
                     </ul>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="subtotal cf">
-                        <ul>
-                            <li class="totalRow final"><span class="label">Total</span><span class="value">$44.00</span></li>
-                            <a href="#" class="btn continue">zamów</a>
-                        </ul>
+                            <div class="totalRow final"><span class="label">SUMA</span><span class="value"></span></div>
                     </div>
-                    <button class="btn btn-primary" data-target="#exampleModalToggle2" data-toggle="modal" data-dismiss="modal">Open second modal</button>
+                    <button class="btn btn-primary" data-target="#exampleModalToggle2" data-toggle="modal" data-dismiss="modal">Złóż zamówienie</button>
                 </div>
             </div>
     </div>
@@ -213,10 +128,10 @@
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Hide this modal and show the first with the button below.
+                Tu będą do uzupełnienia dane osobowe i opcje odbioru
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" data-target="#exampleModalToggle" data-toggle="modal" data-dismiss="modal">Back to first</button>
+                <button class="btn btn-primary" data-target="#shopping-cart" data-toggle="modal" data-dismiss="modal">Zamawiam</button>
             </div>
         </div>
     </div>
