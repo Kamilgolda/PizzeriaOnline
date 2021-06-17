@@ -1,9 +1,9 @@
 ﻿body {
-    background: repeating-linear-gradient( 45deg, #3f226a,#590808 200px);
-    color: #ffffff;
+    background: #fff;
+    color: black;
 }
 .navbar-dark .navbar-nav .nav-link {
-    color: #ffffff;
+    color: black;
     font-size: 18px;
 }
 .navbar-dark .navbar-nav .nav-link:hover {

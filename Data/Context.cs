@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PizzeriaOnline.Enums;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using PizzeriaOnline.ViewModels;
 
 namespace PizzeriaOnline.Data
 {
@@ -21,7 +22,7 @@ namespace PizzeriaOnline.Data
         public DbSet<PricesForSizesProduct> PricesForSizesProducts { get; set; }
         public DbSet<ComponentsProduct> ComponentsProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<ProductsInOrder> ProductsInOrders { get; set; }
+        public DbSet<ProductInOrder> ProductsInOrders { get; set; }
         public DbSet<User> UsersDbSet { get; set; } //Nazwa - bo nie przysłaniam contextu 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -173,17 +174,7 @@ namespace PizzeriaOnline.Data
                 new Component() { Id = 16, Name = "szczypiorek"},
                 new Component() { Id = 17, Name = "rukola"}
                 );
-
-            modelBuilder.Entity<Order>().HasData(
-                new Order() { Id = 1, Price= 555, Name= "Kamil", LastName= "Golda", Address="Lubenia", PhoneNumber="789456123", HasDelivery=true, Status=OrderStatus.Waiting }
-                );
-
-            modelBuilder.Entity<ProductsInOrder>().HasData(
-                new ProductsInOrder() { Id = 1, OrderId = 1, ProductId = 1 }
-                );
-
-        }
-                
+        }                
     }
 
 }

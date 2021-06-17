@@ -1,0 +1,66 @@
+﻿@model PizzeriaOnline.ViewModels.OrderContinuationViewModel
+
+@{
+    ViewData["Title"] = "Zamówienie";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Continuation" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input type="tel" asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" id="delivery" asp-for="HasDelivery"/> @Html.DisplayNameFor(model => model.HasDelivery)
+                </label>
+            </div>
+            <div class="form-group">
+                <div id="products">
+                    @for (int i = 0; i < 20; i++)
+                    {
+                    <div id="product">
+                        <input type="hidden" asp-for='Products[i].ProductId' value="0" class='form-control' />
+                        <input type="hidden" asp-for='Products[i].Size' value="0" class='form-control' />
+                        <input type="hidden" asp-for='Products[i].Quantity' value="0" class='form-control' />
+                    </div>
+                    }
+                </div>
+
+            </div>
+            <h3 id="price"></h3>
+            <div class="form-group">
+                <input type="submit" value="Zamawiam" onclick="sessionStorage.clear()" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/js/order_continuation.js" asp-append-version="true"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

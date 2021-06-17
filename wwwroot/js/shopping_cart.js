@@ -1,68 +1,5 @@
-﻿// WYBOR ROZMIARU I ILOSCI 
-function select_product(elmnt) {
-    let parent = elmnt.parentElement.parentElement;
-    product = {
-        'Id': parent.children[0].innerHTML,
-        'Title': parent.children[2].children[0].children[0].innerHTML,
-        'Size': "",
-        'Quantity': 1,
-        'PriceSmall': parseInt(parent.children[3].innerHTML),
-        'PriceMedium': parseInt(parent.children[4].innerHTML),
-        'PriceLarge': parseInt(parent.children[5].innerHTML)
-    };
-    displayCart()
-}
-
-
-function displayCart() {
-    $('#prodTitle').text(product.Title);
-    $('#prodQuantity').val(product.Quantity)
-}
-
-
-// -1
-$('.show-cart').on("click", ".minus-item", function (event) {
-    if (product.Quantity > 1)
-    product.Quantity-=1
-    displayCart();
-})
-// +1
-$('.show-cart').on("click", ".plus-item", function (event) {
-    if (product.Quantity < 10)
-        product.Quantity += 1
-    displayCart();
-})
-
-var products = JSON.parse(sessionStorage.getItem('productsArray')) || [];
-
-function addToShoppingCart() {
-    size = $(".prodSize option:selected").val();
-    price = 0;
-    if (size != 0) {
-        for (i = 0; i < products.length; i++) {
-            if (product.Id == products[i].Id && size == products[i].Size) {
-                $('#cart').modal('hide');
-                return;
-            }
-        }
-        newItem = {
-            'Id': product.Id,
-            'Title': product.Title,
-            'Size': size,
-            'Quantity': product.Quantity,
-            'PriceSmall': product.PriceSmall,
-            'PriceMedium': product.PriceMedium,
-            'PriceLarge': product.PriceLarge
-        };
-        products.push(newItem)
-        sessionStorage.setItem('productsArray', JSON.stringify(products));
-        $('#cart').modal('hide');
-        
-    }
-    else alert("Nie wybrano rozmiaru")
-}
-//********************************************
-
+﻿var products = JSON.parse(window.sessionStorage.getItem('productsArray')) || [];
+var create_order_button = document.getElementById("create_order");
 function displayShoppingCart() {
     var output = "";
     finalPrice = 0;
@@ -89,7 +26,7 @@ function displayShoppingCart() {
         output += "<li class='items " + classitem +"'>"
             + "<div class='infoWrap'>"
             + "<div class='cartSection'>"
-            + "<img src='http://lorempixel.com/output/technics-q-c-300-300-4.jpg' alt='' class='itemImg' />"
+            + "<img src='" + products[i].Thumbnail +"' alt='' class='itemImg' />"
             + "<h3>" + products[i].Title + "</h3>"
             + "<p>" + size + "</p><br>"
             + "<p> <input type='text' class='qty' oninput='changeQuantity(this)' placeholder='" + products[i].Quantity + "' /> x " + price +"zł</p>"
@@ -105,6 +42,8 @@ function displayShoppingCart() {
     }
     $('.cartWrap').html(output);
     $('.value').text(finalPrice + "zł");
+    if (products.length == 0) create_order_button.classList.add("disabled")
+    else create_order_button.classList.remove("disabled");
 }
 // Remove Items From Shopping-cart
 function removeProduct(elmnt) {
@@ -117,7 +56,7 @@ function removeProduct(elmnt) {
         if (products[i].Title == productTitle && products[i].Size == Size)
             products.splice(i, 1);
     }
-    sessionStorage.setItem('productsArray', JSON.stringify(products));
+    window.sessionStorage.setItem('productsArray', JSON.stringify(products));
     $(elmnt).parent().parent().parent().hide(400, function () {
         displayShoppingCart()
     });
@@ -135,6 +74,6 @@ function changeQuantity(elmnt) {
             products[i].Quantity = newQuantity;
         }
     }
-    sessionStorage.setItem('productsArray', JSON.stringify(products));
+    window.sessionStorage.setItem('productsArray', JSON.stringify(products));
     displayShoppingCart()
 }

@@ -9,8 +9,8 @@ using PizzeriaOnline.Data;
 namespace PizzeriaOnline.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210523210312_init")]
-    partial class init
+    [Migration("20210617232000_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -509,19 +509,6 @@ namespace PizzeriaOnline.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Lubenia",
-                            HasDelivery = true,
-                            LastName = "Golda",
-                            Name = "Kamil",
-                            PhoneNumber = "789456123",
-                            Price = 555.0,
-                            Status = 0
-                        });
                 });
 
             modelBuilder.Entity("PizzeriaOnline.Models.PricesForSizesProduct", b =>
@@ -781,7 +768,7 @@ namespace PizzeriaOnline.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PizzeriaOnline.Models.ProductsInOrder", b =>
+            modelBuilder.Entity("PizzeriaOnline.Models.ProductInOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -793,21 +780,17 @@ namespace PizzeriaOnline.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("ProductsInOrders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            OrderId = 1,
-                            ProductId = 1
-                        });
                 });
 
             modelBuilder.Entity("PizzeriaOnline.Models.User", b =>
@@ -960,21 +943,13 @@ namespace PizzeriaOnline.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PizzeriaOnline.Models.ProductsInOrder", b =>
+            modelBuilder.Entity("PizzeriaOnline.Models.ProductInOrder", b =>
                 {
                     b.HasOne("PizzeriaOnline.Models.Order", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PizzeriaOnline.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PizzeriaOnline.Models.Order", b =>

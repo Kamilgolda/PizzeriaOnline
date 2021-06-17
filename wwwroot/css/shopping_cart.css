@@ -1,16 +1,4 @@
-﻿/*WYBOR ROZMIARU I ILOSCI*/
-#cart {
-    padding-top: 100px;
-    color: black;
-}
-
-.show-cart li {
-    display: flex;
-}
-/***************************/
-
-
-/*KOSZYK*/
+﻿/*KOSZYK*/
 #shopping-cart-button{
     position:fixed;
     top:10px;

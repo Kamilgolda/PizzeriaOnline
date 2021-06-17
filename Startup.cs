@@ -43,6 +43,7 @@ namespace PizzeriaOnline
             services.AddDbContext<Context>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSwaggerGen();
         }
 

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "Final";
+}
+<div class="d-flex flex-column">
+    @if (ViewBag.orderinqueue != 0)
+    {
+    <div class="p-2 align-self-center"><h1>Dziękujemy za złożenie zamówienia</h1></div>
+    <div class="p-2 align-self-center"><h2>Twoje zamówienie jest @ViewBag.orderinqueue w kolejce do realizacji</h2></div>
+    <div class="p-2 align-self-center"><h2>Przewidywana godzina zrealizowania: @ViewBag.time </h2></div>
+    <div class="p-2 align-self-center"><h4>Aby sprawdzić czy Twoje zamówienie jest już gotowe odśwież stronę</h4></div>
+    }
+    else { 
+    <div class="p-2 align-self-center"><h1>Twoje zamówienie jest gotowe</h1></div>
+    }
+</div>
+

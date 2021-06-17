@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PizzeriaOnline.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -205,6 +205,28 @@ namespace PizzeriaOnline.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductsInOrders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Size = table.Column<int>(type: "INTEGER", nullable: false),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductsInOrders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductsInOrders_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ComponentsProducts",
                 columns: table => new
                 {
@@ -251,32 +273,6 @@ namespace PizzeriaOnline.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ProductsInOrders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductsInOrders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductsInOrders_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductsInOrders_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Components",
                 columns: new[] { "Id", "Name" },
@@ -305,7 +301,7 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "Components",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { 12, "parmezan" });
+                values: new object[] { 13, "kurczak" });
 
             migrationBuilder.InsertData(
                 table: "Components",
@@ -320,7 +316,7 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "Components",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { 13, "kurczak" });
+                values: new object[] { 12, "parmezan" });
 
             migrationBuilder.InsertData(
                 table: "Components",
@@ -361,11 +357,6 @@ namespace PizzeriaOnline.Migrations
                 table: "Components",
                 columns: new[] { "Id", "Name" },
                 values: new object[] { 9, "cebula czerwona" });
-
-            migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Id", "Address", "HasDelivery", "LastName", "Name", "PhoneNumber", "Price", "Status" },
-                values: new object[] { 1, "Lubenia", true, "Golda", "Kamil", "789456123", 555.0, 0 });
 
             migrationBuilder.InsertData(
                 table: "Products",
@@ -410,12 +401,42 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
                 columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 29, 14, 7 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 14, 1, 4 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 15, 2, 4 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
                 values: new object[] { 16, 10, 4 });
 
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
                 columns: new[] { "Id", "ComponentId", "ProductId" },
                 values: new object[] { 17, 11, 4 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 18, 12, 4 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 25, 2, 6 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 28, 7, 6 });
 
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
@@ -445,17 +466,7 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
                 columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 24, 1, 6 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 15, 2, 4 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 25, 2, 6 });
+                values: new object[] { 26, 6, 6 });
 
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
@@ -465,52 +476,12 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
                 columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 28, 7, 6 });
+                values: new object[] { 12, 8, 3 });
 
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
                 columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 29, 14, 7 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 30, 13, 7 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 31, 15, 7 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 32, 9, 7 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 33, 16, 7 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 34, 17, 7 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 26, 6, 6 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 14, 1, 4 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 18, 12, 4 });
+                values: new object[] { 13, 9, 3 });
 
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
@@ -520,7 +491,22 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
                 columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 5, 3, 2 });
+                values: new object[] { 2, 2, 1 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 34, 17, 7 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 33, 16, 7 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 3, 1, 2 });
 
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
@@ -530,7 +516,37 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
                 columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 3, 1, 2 });
+                values: new object[] { 5, 3, 2 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 6, 4, 2 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 11, 7, 3 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 24, 1, 6 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 32, 9, 7 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 31, 15, 7 });
+
+            migrationBuilder.InsertData(
+                table: "ComponentsProducts",
+                columns: new[] { "Id", "ComponentId", "ProductId" },
+                values: new object[] { 30, 13, 7 });
 
             migrationBuilder.InsertData(
                 table: "ComponentsProducts",
@@ -548,39 +564,9 @@ namespace PizzeriaOnline.Migrations
                 values: new object[] { 7, 5, 2 });
 
             migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 6, 4, 2 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 2, 2, 1 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 11, 7, 3 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 12, 8, 3 });
-
-            migrationBuilder.InsertData(
-                table: "ComponentsProducts",
-                columns: new[] { "Id", "ComponentId", "ProductId" },
-                values: new object[] { 13, 9, 3 });
-
-            migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 3, 26.0, 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "PricesForSizesProducts",
-                columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 1, 13.5, 1, 0 });
+                values: new object[] { 17, 26.0, 6, 1 });
 
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
@@ -590,7 +576,7 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 17, 26.0, 6, 1 });
+                values: new object[] { 19, 19.0, 7, 0 });
 
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
@@ -600,27 +586,7 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 19, 19.0, 7, 0 });
-
-            migrationBuilder.InsertData(
-                table: "PricesForSizesProducts",
-                columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 2, 18.0, 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "PricesForSizesProducts",
-                columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 9, 33.0, 3, 2 });
-
-            migrationBuilder.InsertData(
-                table: "PricesForSizesProducts",
-                columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 15, 30.0, 5, 2 });
-
-            migrationBuilder.InsertData(
-                table: "PricesForSizesProducts",
-                columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 8, 24.0, 3, 1 });
+                values: new object[] { 10, 17.0, 4, 0 });
 
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
@@ -635,16 +601,6 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 5, 24.0, 2, 1 });
-
-            migrationBuilder.InsertData(
-                table: "PricesForSizesProducts",
-                columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 6, 32.0, 2, 2 });
-
-            migrationBuilder.InsertData(
-                table: "PricesForSizesProducts",
-                columns: new[] { "Id", "Price", "ProductId", "Size" },
                 values: new object[] { 12, 35.0, 4, 2 });
 
             migrationBuilder.InsertData(
@@ -655,12 +611,17 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 10, 17.0, 4, 0 });
+                values: new object[] { 20, 26.0, 7, 1 });
 
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 20, 26.0, 7, 1 });
+                values: new object[] { 9, 33.0, 3, 2 });
+
+            migrationBuilder.InsertData(
+                table: "PricesForSizesProducts",
+                columns: new[] { "Id", "Price", "ProductId", "Size" },
+                values: new object[] { 8, 24.0, 3, 1 });
 
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
@@ -670,17 +631,42 @@ namespace PizzeriaOnline.Migrations
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
+                values: new object[] { 6, 32.0, 2, 2 });
+
+            migrationBuilder.InsertData(
+                table: "PricesForSizesProducts",
+                columns: new[] { "Id", "Price", "ProductId", "Size" },
+                values: new object[] { 5, 24.0, 2, 1 });
+
+            migrationBuilder.InsertData(
+                table: "PricesForSizesProducts",
+                columns: new[] { "Id", "Price", "ProductId", "Size" },
                 values: new object[] { 4, 15.0, 2, 0 });
 
             migrationBuilder.InsertData(
                 table: "PricesForSizesProducts",
                 columns: new[] { "Id", "Price", "ProductId", "Size" },
-                values: new object[] { 21, 37.0, 7, 2 });
+                values: new object[] { 3, 26.0, 1, 2 });
 
             migrationBuilder.InsertData(
-                table: "ProductsInOrders",
-                columns: new[] { "Id", "OrderId", "ProductId" },
-                values: new object[] { 1, 1, 1 });
+                table: "PricesForSizesProducts",
+                columns: new[] { "Id", "Price", "ProductId", "Size" },
+                values: new object[] { 2, 18.0, 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "PricesForSizesProducts",
+                columns: new[] { "Id", "Price", "ProductId", "Size" },
+                values: new object[] { 1, 13.5, 1, 0 });
+
+            migrationBuilder.InsertData(
+                table: "PricesForSizesProducts",
+                columns: new[] { "Id", "Price", "ProductId", "Size" },
+                values: new object[] { 15, 30.0, 5, 2 });
+
+            migrationBuilder.InsertData(
+                table: "PricesForSizesProducts",
+                columns: new[] { "Id", "Price", "ProductId", "Size" },
+                values: new object[] { 21, 37.0, 7, 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -738,11 +724,6 @@ namespace PizzeriaOnline.Migrations
                 name: "IX_ProductsInOrders_OrderId",
                 table: "ProductsInOrders",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductsInOrders_ProductId",
-                table: "ProductsInOrders",
-                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -781,10 +762,10 @@ namespace PizzeriaOnline.Migrations
                 name: "Components");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Orders");
         }
     }
 }

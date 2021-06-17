@@ -230,11 +230,9 @@ namespace PizzeriaOnline.Repositories
             {
                 product.ImageMimeType = productmodel.PhotoAvatar.ContentType;
                 product.ImageName = Path.GetFileName(productmodel.PhotoAvatar.FileName);
-                using (var memoryStream = new MemoryStream())
-                {
-                    productmodel.PhotoAvatar.CopyTo(memoryStream);
-                    product.PhotoFile = memoryStream.ToArray();
-                }
+                using var memoryStream = new MemoryStream();
+                productmodel.PhotoAvatar.CopyTo(memoryStream);
+                product.PhotoFile = memoryStream.ToArray();
             }
             _context.Products.Update(product);
             await _context.SaveChangesAsync();

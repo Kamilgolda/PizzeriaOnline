@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/layout.css" />
+    <link rel="stylesheet" href="~/css/shopping_cart.css"/>
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -50,7 +51,9 @@
                                 <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
                             </li>
                         }
-
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-primary btn-lg" id="shopping-cart-button" data-toggle="modal" data-target="#shopping-cart" onclick="displayShoppingCart()">Koszyk (<span class="total-count"></span>)</button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -61,6 +64,28 @@
             @RenderBody()
         </main>
     </div>
+    <div class="modal fade " id="shopping-cart" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1" style="color:black">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel">Koszyk</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="cart">
+                        <ul class="cartWrap">
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="subtotal cf">
+                        <div class="totalRow final"><span class="label">SUMA</span><span class="value"></span></div>
+                    </div>
+                    <a class="btn btn-primary" id="create_order" asp-action="Continuation" asp-controller="Order">Złóż zamówienie</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -70,6 +95,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/shopping_cart.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
