@@ -119,7 +119,6 @@ namespace PizzeriaOnline.Controllers
             if (ModelState.IsValid)
             {
                 await _productsRepository.Update(productmodel);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(productmodel);
@@ -133,8 +132,8 @@ namespace PizzeriaOnline.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _productsRepository.GetById(id);
+            
             if (product == null)
             {
                 return NotFound();
@@ -148,10 +147,8 @@ namespace PizzeriaOnline.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var removed = await _productsRepository.Delete(id);
+            return removed ? RedirectToAction(nameof(Index)) : NotFound();
         }
 
 

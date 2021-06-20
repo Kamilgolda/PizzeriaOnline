@@ -29,8 +29,7 @@ namespace PizzeriaOnline.Controllers
 
         public IActionResult Index()
         {
-            var listaproduktow = _productsRepository.GetAll();
-            return View(listaproduktow);
+            return View();
         }
 
         public async Task<IActionResult> Menu()

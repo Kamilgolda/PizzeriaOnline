@@ -1,52 +1,41 @@
-﻿@model Task<IEnumerable<PizzeriaOnline.Models.Product>>
-
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "Strona Startowa";
 }
 
-<div class="pizza-list">
-
-    @foreach (var item in Model.Result)
-    {
-    <div class="pizza-item">
-        @Html.DisplayFor(modelItem => item.Title)
-        <img class="photo-pizza" src="@Url.Action("GetImage", "Home", new { Id = item.Id })" />
-
-        <div class="content">
-            <br />
-            <div class="font-weight-bold">
-                @foreach (var component in item.Components)
-                {
-                    <span>
-                        @Html.DisplayFor(model => component.Component.Name),
-                    </span>
-                }
-            </div>
-            <br />
-            <div class="content-priceForSize">
-                @foreach (var priceForSize in item.PricesForSizes)
-                {
-                    <div>
-                        <span class="font-weight-bold">@Html.DisplayFor(model => priceForSize.Size) </span> :
-                        @Html.DisplayFor(model => priceForSize.Price) zł
-
-                    </div>
-                }
-            </div>
-            <div class="item_to_cart">
-                <button style="background:#000; color:#fff;">Dodaj do koszyka</button>
-                <select>
-                    @foreach (var priceForSize in item.PricesForSizes)
-                    {
-                    <option>@Html.DisplayFor(model => priceForSize.Size)</option>
-                    }
-                    </select>
-            </div>
-            <p>
-                @Html.DisplayNameFor(modelItem => item.Availability)
-                @Html.DisplayFor(modelItem => item.Availability)
-            </p>
-        </div>
+<div class="p-5 d-flex flex-column justify-content-center">
+    <h1 class="p-lg-2 align-self-center">Witamy w naszej pizzerii</h1>
+    <h4 class="p-lg-2 align-self-center" style="text-align:center">
+        Najlepsza pizza w mieście czeka na Ciebie każdego dnia w naszym lokalu. Zapraszamy do siebie
+        na prawdziwie włoskie jedzenie.
+    </h4>
+    <div class="p-lg-2 pb-lg-5 align-self-center">
+        <a class="btn btn-info btn-lg" asp-action="Menu">Zobacz Menu</a>
+        <a class="btn btn-success btn-lg" asp-action="Register" asp-controller="Account">Zarejestruj się</a>
+        <a class="btn btn-warning btn-lg" asp-action="Login" asp-controller="Account">Zaloguj się</a>
     </div>
-    }
+    
+    <div class="border border-success p-3 align-self-center mx-xl-5 rounded-pill">
+        <h2 style="text-align:center">DLACZEGO WARTO</h2>
+        <p style="text-align:center">
+            Własny wyrób i wypiek pizzy to nasza specjalność. Działamy od 2002 roku i jesteśmy najstarszą pizzerią w mieście!
+            Wyrób pizzy opanowaliśmy do perfekcji, ponad 15 lat doświadczenia jest tego gwarancją. W naszej ofercie proponujemy
+            Wam smaczne pizze prosto z pieca.
+        </p>
+
+        <p style="text-align:center">
+            Nasz szef kuchni Tomasz, lub jak wolimy go nazywać "Luciano" pracował w najlepszej włoskiej pizzerii przez 4 lata.
+            Dziś jest u nas i kręci najlepsze pizze specjalnie dla Was.
+        </p>
+
+        <p style="text-align:center">Jeżeli jeszcze nas nie odwiedziłeś/odwiedziłaś to zapraszamy na kulinarną podróż po Włoszech!</p>
+
+        <div style="text-align:center"><a class="btn btn-primary btn-lg" asp-action="Menu">Zobacz Menu</a></div>
+    </div>
+    
+    <h3 class="p-lg-2 align-self-center">GODZINY OTWARCIA:</h3>
+    <p class="align-self-center">
+        poniedziałek 14:00 - 23:00 <br /> wtorek 14:00 - 23:00 <br /> środa 14:00 - 23:00 <br /> czwartek 14:00 - 23:00 <br /> piątek 14:00 - 00:00
+        <br /> sobota 14:00 - 00:00 <br /> niedziela 14:00 - 00:00
+    </p>
 </div>
+
