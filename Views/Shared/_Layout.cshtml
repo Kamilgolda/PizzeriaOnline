@@ -37,9 +37,9 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="#">@User.Identity.Name Profil</a>
+                                <a class="nav-link" href="@Url.Action("EditProfile", "Account")">Mój Profil</a>
                             </li>
-
+                                    
                             <li class="nav-item">
                                 <a class="nav-link" href="@Url.Action("Logout", "Account")">Wyloguj</a>
                             </li>

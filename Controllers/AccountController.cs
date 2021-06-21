@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PizzeriaOnline.Models;
 using PizzeriaOnline.ViewModels;
@@ -22,6 +23,53 @@ namespace PizzeriaOnline.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> EditProfile()
+        {
+            User authUser = await _userManager.GetUserAsync(User);
+
+
+            return View(authUser);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [Authorize]
+        public async Task<IActionResult> EditProfile(User user)
+        {
+            User authUser = await _userManager.GetUserAsync(User);
+            if (ModelState.IsValid)
+            {
+                if(user.FirstName != null)
+                {
+                    authUser.FirstName = user.FirstName;
+                }
+                if (user.LastName != null)
+                {
+                    authUser.LastName = user.LastName;
+                }
+                if (user.Email != null)
+                {
+                    authUser.Email = user.Email;
+                }
+                if (user.PhoneNumber != null)
+                {
+                    authUser.PhoneNumber = user.PhoneNumber;
+                }
+                if (user.Address != null)
+                {
+                    authUser.Address = user.Address;
+                }
+                var result = await _userManager.UpdateAsync(authUser);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("EditProfile", "Account");
+                }
+            }
+            ModelState.AddModelError("", "Faild to Login");
+            return View(authUser);
+        }
+
         public IActionResult Login()
         {
             if (this.User.Identity.IsAuthenticated)
@@ -111,7 +159,6 @@ namespace PizzeriaOnline.Controllers
             }
             return View();
         }
-
         public IActionResult AccessDenied()
         {
             return View();
