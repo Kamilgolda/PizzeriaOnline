@@ -33,28 +33,11 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Menu">Menu</a>
                         </li>
-
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">@User.Identity.Name Profil</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Logout", "Account")">Wyloguj</a>
-                            </li>
-
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
-                            </li>
-                        }
                         <li class="nav-item">
                             <button type="button" class="btn btn-primary btn-lg" id="shopping-cart-button" data-toggle="modal" data-target="#shopping-cart" onclick="displayShoppingCart()">Koszyk (<span class="total-count"></span>)</button>
                         </li>
                     </ul>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>

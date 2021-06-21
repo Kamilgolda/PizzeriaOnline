@@ -1,7 +1,13 @@
 ﻿@model PizzeriaOnline.ViewModels.OrderContinuationViewModel
+@using Microsoft.AspNetCore.Identity
+@using PizzeriaOnline.Models
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Zamówienie";
+    User logged_user = await UserManager.GetUserAsync(User);
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -10,40 +16,69 @@
     <div class="col-md-4">
         <form asp-action="Continuation" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input type="tel" asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="form-group">
+                    <input asp-for="UserID" value="@logged_user.Id" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" value="@logged_user.FirstName" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" value="@logged_user.LastName" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" value="@logged_user.Address" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input type="tel" asp-for="PhoneNumber" class="form-control" value="@logged_user.PhoneNumber" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input type="tel" asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" id="delivery" asp-for="HasDelivery"/> @Html.DisplayNameFor(model => model.HasDelivery)
+                    <input class="form-check-input" id="delivery" asp-for="HasDelivery" /> @Html.DisplayNameFor(model => model.HasDelivery)
                 </label>
             </div>
             <div class="form-group">
                 <div id="products">
                     @for (int i = 0; i < 20; i++)
                     {
-                    <div id="product">
-                        <input type="hidden" asp-for='Products[i].ProductId' value="0" class='form-control' />
-                        <input type="hidden" asp-for='Products[i].Size' value="0" class='form-control' />
-                        <input type="hidden" asp-for='Products[i].Quantity' value="0" class='form-control' />
-                    </div>
+                        <div id="product">
+                            <input type="hidden" asp-for='Products[i].ProductId' value="0" class='form-control' />
+                            <input type="hidden" asp-for='Products[i].Size' value="0" class='form-control' />
+                            <input type="hidden" asp-for='Products[i].Quantity' value="0" class='form-control' />
+                        </div>
                     }
                 </div>
 

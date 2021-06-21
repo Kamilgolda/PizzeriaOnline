@@ -1,4 +1,18 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function ShowDataEdit() {
+    var div = document.getElementById('dane-osobowe');
 
-// Write your JavaScript code.
+    if (div.style.display == '') {
+        div.style.display = 'none';
+    }
+    else {
+        div.style.display = '';
+    }
+    var div = document.getElementById('edycja-dane-osobowe');
+
+    if (div.style.display == '') {
+        div.style.display = 'none';
+    }
+    else {
+        div.style.display = '';
+    }
+}

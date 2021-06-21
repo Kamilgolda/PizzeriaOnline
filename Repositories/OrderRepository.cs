@@ -56,6 +56,20 @@ namespace PizzeriaOnline.Repositories
             return orders;
         }
 
+        public async Task<IEnumerable<Order>> UserOrders(string UserID)
+        {
+            var orders = await _context
+                .Orders
+                .Include(o => o.Products)
+                .AsNoTracking()
+                .Where(o => o.UserID==UserID)
+                .ToListAsync();
+
+            orders.Reverse();
+
+            return orders;
+        }
+
         public async Task<int> Create(OrderContinuationViewModel ordermodel)
         {
             List<ProductInOrder> productsInOrder = new List<ProductInOrder>();
@@ -80,6 +94,7 @@ namespace PizzeriaOnline.Repositories
             }
             Order order = new Order()
             {
+                UserID = ordermodel.UserID,
                 Name = ordermodel.Name,
                 LastName = ordermodel.LastName,
                 Address = ordermodel.Address,
@@ -92,5 +107,7 @@ namespace PizzeriaOnline.Repositories
             await _context.SaveChangesAsync();
             return order.Id;
         }
+
+
     }
 }
