@@ -13,5 +13,6 @@ namespace PizzeriaOnline.Repositories
         Task<int> Create(OrderContinuationViewModel ordermodel);
         Task<IEnumerable<Order>> GetAll();
         Task<Order> GetById(int? id);
+        Task<IEnumerable<Order>> UserOrders(string UserID);
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PizzeriaOnline.Enums;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using PizzeriaOnline.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace PizzeriaOnline.Data
 {

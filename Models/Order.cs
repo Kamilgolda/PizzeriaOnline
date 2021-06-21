@@ -10,7 +10,8 @@ namespace PizzeriaOnline.Models
     public class Order
     {
         public int Id { get; set; }
-        //public User User { get; set; }
+        
+        public string UserID { get; set; }
 
         [Display(Name = "Kwota zamówienia:")]
         [Range(1, 5000)]
@@ -33,7 +34,7 @@ namespace PizzeriaOnline.Models
         [Required(ErrorMessage = "Proszę podać numer kontaktowy")]
         public string PhoneNumber { get; set; }
 
-        [Display(Name = "Możliwość dowozu:")]
+        [Display(Name = "Dowóz:")]
         public bool HasDelivery { get; set; }
 
         [Display(Name = "Status zamówienia:")]

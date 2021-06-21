@@ -11,6 +11,8 @@ namespace PizzeriaOnline.ViewModels
     {
         public int Id { get; set; }
 
+        public string UserID { get; set; }
+
         [Display(Name = "Imie:")]
         [Required(ErrorMessage = "Proszę podać imię")]
         [StringLength(20)]

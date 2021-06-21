@@ -22,6 +22,7 @@ namespace PizzeriaOnline.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            //Create_Account();
         }
         [HttpGet]
         [Authorize]
@@ -66,7 +67,7 @@ namespace PizzeriaOnline.Controllers
                     return RedirectToAction("EditProfile", "Account");
                 }
             }
-            ModelState.AddModelError("", "Faild to Login");
+            ModelState.AddModelError("", "Failed to Login");
             return View(authUser);
         }
 
@@ -79,6 +80,43 @@ namespace PizzeriaOnline.Controllers
             return View();
         }
 
+        public async void Create_Account()
+        {
+            User user = new User()
+            {
+                FirstName = "Admin",
+                Address = "avc",
+                LastName = "Admin",
+                UserName = "Admin",
+                PhoneNumber = "123",
+                Email = "abc@gmail.com",
+            };
+            var result = await _userManager.CreateAsync(user, "zaq1@WSX");
+            if (result.Succeeded)
+            {
+                bool roleExists = await _roleManager.RoleExistsAsync("Admin");
+                if (!roleExists)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                }
+
+                if (!await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                }
+
+                if (!string.IsNullOrWhiteSpace(user.Email))
+                {
+                    Claim claim = new Claim(ClaimTypes.Email, user.Email);
+                    await _userManager.AddClaimAsync(user, claim);
+                }
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+    }
+
         [HttpPost, ActionName("Login")]
         public async Task<IActionResult> LoginPost(LoginViewModel loginModel)
         {
@@ -87,10 +125,10 @@ namespace PizzeriaOnline.Controllers
                 var result = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, loginModel.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Menu", "Home");
                 }
             }
-            ModelState.AddModelError("", "Faild to Login");
+            ModelState.AddModelError("", "Błąd logowania");
             return View();
         }
         public async Task<IActionResult> Logout()
@@ -122,23 +160,16 @@ namespace PizzeriaOnline.Controllers
                 var result = await _userManager.CreateAsync(user, registerModel.Password);
                 if (result.Succeeded)
                 {
-
-                        //ROLE UZYTKOWNIKA DO OGARNIĘCIEA !!!
-
-                    //?????????????????????????????????????????????//
-
-                    bool roleExists = await _roleManager.RoleExistsAsync(registerModel.RoleName);
+                    bool roleExists = await _roleManager.RoleExistsAsync("User");
                     if (!roleExists)
                     {
-                        await _roleManager.CreateAsync(new IdentityRole(registerModel.RoleName));
+                        await _roleManager.CreateAsync(new IdentityRole("User"));
                     }
 
-                    if (!await _userManager.IsInRoleAsync(user, registerModel.RoleName))
+                    if (!await _userManager.IsInRoleAsync(user, "User"))
                     {
-                        await _userManager.AddToRoleAsync(user, registerModel.RoleName);
+                        await _userManager.AddToRoleAsync(user, "User");
                     }
-
-                    //?????????????????????????????????????????????//
 
                     if (!string.IsNullOrWhiteSpace(user.Email))
                     {
@@ -149,7 +180,7 @@ namespace PizzeriaOnline.Controllers
                     var resultSignIn = await _signInManager.PasswordSignInAsync(registerModel.UserName, registerModel.Password, registerModel.RememberMe, false);
                     if (resultSignIn.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Menu", "Home");
                     }
                 }
                 foreach (var error in result.Errors)

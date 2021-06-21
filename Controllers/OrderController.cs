@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,15 +18,27 @@ namespace PizzeriaOnline.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IProductsRepository _productsRepository;
+        private UserManager<User> _userManager;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IProductsRepository productsRepository, UserManager<User> userManager)
         {
             _orderRepository = orderRepository;
+            _productsRepository = productsRepository;
+            _userManager = userManager;
         }
-
+        [Authorize(Roles = "Worker,Admin")]
         public async Task<IActionResult> Orders()
         {
             return View(await _orderRepository.GetAll());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MyOrders()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var orders = await _orderRepository.UserOrders(user.Id);
+            return View(orders);
         }
 
         public IActionResult Continuation()
@@ -44,28 +58,35 @@ namespace PizzeriaOnline.Controllers
             return View(ordermodel);
         }
 
+        [Authorize(Roles = "Worker,Admin")]
         public async Task<IActionResult> ActualOrders()
         {
             return View(await _orderRepository.ActualOrders());
         }
 
-        //// GET: Order/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var order = await _context.Orders
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (order == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(order);
-        //}
+        [Authorize]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            List<Product> products = new List<Product>();
+            var order = await _orderRepository.GetById(id);
+            foreach(ProductInOrder product in order.Products)
+            {
+                products.Add(await _productsRepository.GetById(product.ProductId));
+            }
+            ViewBag.products = products;
+            if (order == null)
+            {
+                return NotFound();
+            }
+            var user = await _userManager.GetUserAsync(User);
+            if (order.UserID == user.Id)
+                return View(order);
+            else return NotFound();
+        }
 
         public async Task<IActionResult> Final(int orderid)
         {

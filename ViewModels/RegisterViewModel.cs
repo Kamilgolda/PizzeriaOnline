@@ -28,9 +28,5 @@ namespace PizzeriaOnline.ViewModels
         [Display(Name = "Adres")]
         [Required(ErrorMessage = "Wprowadź adres.")]
         public string Adress { get; set; }
-
-        [Display(Name = "Rola")]
-        [Required(ErrorMessage = "Wybierz rolę")]
-        public string RoleName { get; set; }
     }
 }
