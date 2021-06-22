@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaOnline.Data;
+using PizzeriaOnline.Enums;
 using PizzeriaOnline.Models;
 using PizzeriaOnline.Repositories;
 using PizzeriaOnline.ViewModels;
@@ -41,8 +42,34 @@ namespace PizzeriaOnline.Controllers
             return View(orders);
         }
 
+        [Authorize(Roles = "Worker, Admin")]
+        public async Task<IActionResult> ChangeStatus(int orderid, int status)
+        {
+            if (orderid == 0 || orderid == null || status == null ) return NotFound();
+
+            await _orderRepository.ChangeStatus(orderid, status);
+            return RedirectToAction(nameof(ActualOrders));
+        }
+
         public IActionResult Continuation()
         {
+            var actualday = DateTime.Now.DayOfWeek;
+            var actualhour = DateTime.Now.Hour;
+            if ((actualday == DayOfWeek.Monday && actualhour > 22 || actualhour < 14)
+                || (actualday == DayOfWeek.Tuesday && actualhour > 22 || actualhour < 14)
+                || (actualday == DayOfWeek.Wednesday && actualhour > 22 || actualhour < 14)
+                || (actualday == DayOfWeek.Thursday && actualhour > 22 || actualhour < 14)
+                || (actualday == DayOfWeek.Friday && actualhour < 14)
+                || (actualday == DayOfWeek.Saturday && actualhour < 14)
+                || (actualday == DayOfWeek.Sunday && actualhour < 14))
+            {
+                ViewBag.close = true;
+            }
+            else
+            {
+                ViewBag.close = false;
+            }
+
             return View();
         }
 
@@ -65,7 +92,7 @@ namespace PizzeriaOnline.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> DetailsUser(int? id)
         {
             if (id == null)
             {
@@ -88,6 +115,28 @@ namespace PizzeriaOnline.Controllers
             else return NotFound();
         }
 
+        [Authorize(Roles ="Worker, Admin")]
+        public async Task<IActionResult> DetailsWorker(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            List<Product> products = new List<Product>();
+            var order = await _orderRepository.GetById(id);
+            foreach (ProductInOrder product in order.Products)
+            {
+                products.Add(await _productsRepository.GetById(product.ProductId));
+            }
+            ViewBag.products = products;
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
+        }
+
+
         public async Task<IActionResult> Final(int orderid)
         {
             var actual_orders = await _orderRepository.ActualOrders();
@@ -108,89 +157,92 @@ namespace PizzeriaOnline.Controllers
             return View();
         }
 
-        //// GET: Order/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [Authorize(Roles = "Worker, Admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            List<Product> products = new List<Product>();
+            var order = await _orderRepository.GetById(id);
 
-        //    var order = await _context.Orders.FindAsync(id);
-        //    if (order == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(order);
-        //}
+            EditOrderViewModel orderModel = new EditOrderViewModel()
+            {
+                Id = order.Id,
+                Address = order.Address,
+                HasDelivery = order.HasDelivery,
+                LastName = order.LastName,
+                Name = order.Name,
+                PhoneNumber = order.PhoneNumber,
+                Price = order.Price,
+                Products = order.Products.ToList(),
+                Status = order.Status,
+                UserID = order.UserID
+            };
 
-        //// POST: Order/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,LastName,Address,PhoneNumber,HasDelivery,Status")] Order order)
-        //{
-        //    if (id != order.Id)
-        //    {
-        //        return NotFound();
-        //    }
+            foreach (ProductInOrder product in order.Products)
+            {
+                products.Add(await _productsRepository.GetById(product.ProductId));
+            }
+            ViewBag.products = products;
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(orderModel);
+        }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(order);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!OrderExists(order.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(order);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Worker, Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserID,Price,Name,LastName,Address,PhoneNumber,HasDelivery,Status,Products")] EditOrderViewModel orderModel)
+        {
+            if (id != orderModel.Id)
+            {
+                return NotFound();
+            }
 
-        //// GET: Order/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _orderRepository.Update(orderModel);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!OrderExists(orderModel.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ActualOrders));
+            }
+            return View(orderModel);
+        }
 
-        //    var order = await _context.Orders
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (order == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [Authorize(Roles = "Worker, Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(order);
-        //}
+            await _orderRepository.Delete(id);
 
-        //// POST: Order/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var order = await _context.Orders.FindAsync(id);
-        //    _context.Orders.Remove(order);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return RedirectToAction(nameof(ActualOrders));
+        }
 
-        //private bool OrderExists(int id)
-        //{
-        //    return _context.Orders.Any(e => e.Id == id);
-        //}
+        private bool OrderExists(int id)
+        {
+            return _orderRepository.GetById(id) != null;
+        }
+
+
     }
 }

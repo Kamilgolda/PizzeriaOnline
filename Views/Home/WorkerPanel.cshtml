@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Panel pracownika";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex justify-content-center p-lg-5">
+    <a class="btn btn-lg btn-danger m-1" asp-action="Products" asp-controller="Products">Zarządzaj produktami</a>
+    <a class="btn btn-lg btn-info m-1" asp-action="ActualOrders" asp-controller="Order">Zarządzanie aktualnymi zamówieniami</a>
+    <a class="btn btn-lg btn-secondary m-1" asp-action="Orders" asp-controller="Order">Wszystkie zamówienia</a>
+</div>

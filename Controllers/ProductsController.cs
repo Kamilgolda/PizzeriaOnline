@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,13 +29,13 @@ namespace PizzeriaOnline.Controllers
             _environment = environment;
         }
 
-        // GET: Products
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "Worker, Admin")]
+        public async Task<IActionResult> Products()
         {
             return View(await _productsRepository.GetAll());
         }
 
-        // GET: Products/Details/5
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,29 +59,27 @@ namespace PizzeriaOnline.Controllers
             ViewBag.ComponentId = new SelectList(components.AsNoTracking(), "Id", "Name", selectedcomponent);
         }
 
-        // GET: Products/Create
+        [Authorize(Roles = "Worker, Admin")]
         public IActionResult Create()
         {
             ComponentsDropDownList();
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Create(CreateProductViewModel productmodel)
         {
             if (ModelState.IsValid)
             {
                 await _productsRepository.Create(productmodel);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Products));
             }
             return View(productmodel);
         }
 
-        // GET: Products/Edit/5
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -109,22 +108,20 @@ namespace PizzeriaOnline.Controllers
             return View(editProductModel);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Edit(EditProductViewModel productmodel)
         {
             if (ModelState.IsValid)
             {
                 await _productsRepository.Update(productmodel);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Products));
             }
             return View(productmodel);
         }
 
-        // GET: Products/Delete/5
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,10 +142,11 @@ namespace PizzeriaOnline.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var removed = await _productsRepository.Delete(id);
-            return removed ? RedirectToAction(nameof(Index)) : NotFound();
+            return removed ? RedirectToAction(nameof(Products)) : NotFound();
         }
 
 
