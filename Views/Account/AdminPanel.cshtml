@@ -1,0 +1,85 @@
+﻿@model IEnumerable<User>
+@using Microsoft.AspNetCore.Identity
+@using PizzeriaOnline.Models
+
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Użytkownicy";
+}
+<div class="p-4 bg-transparent rounded">
+    <h1>@ViewData["Title"]</h1>
+    <br />
+    <div class="row border-bottom font-weight-bold">
+
+        <div class="col-2">Użytkownik</div>
+        <div class="col-2">Imię</div>
+        <div class="col-2">Nazwisko</div>
+        <div class="col-2">Adres</div>
+        @*<div class="col-1">Email</div>
+        <div class="col-1">Telefon</div>*@
+        <div class="col-2">Rola</div>
+        <div class="col-2">Nowa Rola </div>
+    </div>
+    @foreach (var item in Model)
+    {
+<div class="row border-bottom p-3">
+
+    <div class="col-2">
+        @item.UserName
+    </div>
+    <div class="col-2">
+        @item.FirstName
+    </div>
+    <div class="col-2">
+        @item.LastName
+    </div>
+    <div class="col-2">
+        @item.Address
+    </div>
+    @*<div class="col-1">
+            @item.Email
+        </div>
+        <div class="col-1">
+            @item.PhoneNumber
+        </div>*@
+    <div class="col-2">
+        @((await UserManager.GetRolesAsync(item)).FirstOrDefault())
+    </div>
+    <div class="col-2">
+        <form class="submit-form" method="post" enctype="multipart/form-data" asp-action="ChangeStatus">
+
+
+
+
+            <input type="submit" onclick="" class="btn btn-warning" value="Zmień Rolę"/>
+        </form>
+    </div>
+
+
+    @*<div class="row">
+                @foreach (var componentsProduct in item.Components)
+                {
+                    if (componentsProduct == item.Components.Last())
+                    {
+                        @Html.DisplayFor(model => componentsProduct.Component.Name)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => componentsProduct.Component.Name)<text>, </text>
+                    }
+                }
+            </div>
+        </div>
+        @foreach (var priceForSize in item.PricesForSizes)
+        {
+            <div class="col-1 align-self-center">
+                @Html.DisplayFor(model => priceForSize.Price)
+            </div>
+        }
+        <div class="col-2 align-self-center">
+            <button type="button" data-toggle="modal" data-target="#cart" onclick="select_product(this)" class="btn btn-warning">Dodaj do koszyka</button>
+        </div>*@
+</div>
+    }
+</div>
