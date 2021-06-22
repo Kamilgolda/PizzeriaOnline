@@ -194,5 +194,43 @@ namespace PizzeriaOnline.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirm()
+        {
+            User authUser = await _userManager.GetUserAsync(User);
+            
+            if (authUser == null)
+            {
+                return NotFound();
+            }
+            return View(authUser);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirm(User user)
+        {
+            User authUser = await _userManager.GetUserAsync(User);
+
+            if (user == null || user.Id != authUser.Id)
+            {
+                return NotFound();
+            }
+            var userToDeleted = await _userManager.FindByIdAsync(user.Id);
+            var result = await _userManager.DeleteAsync(userToDeleted);
+            await _signInManager.SignOutAsync();
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            foreach(var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            return RedirectToAction("Login", "Account");
+        }
     }
 }

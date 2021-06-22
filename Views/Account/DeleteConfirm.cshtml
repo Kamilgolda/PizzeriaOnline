@@ -1,0 +1,41 @@
+﻿@model PizzeriaOnline.Models.User
+
+@{
+    ViewData["Title"] = "Usuń konto";
+}
+
+
+
+<div class="row justify-content-center mg-top20">
+    <h1> @ViewData["Title"] </h1>
+</div>
+<div class="row justify-content-center mg-top20">
+    <h3>Czy na pewno chcesz usunąć konto <b> @Model.UserName</b>? </h3>
+</div>
+
+<div class="row w-100">
+
+    <div class="col-3 h-100">
+    </div>
+
+
+    <div class="col-6 mg-top100">
+        <form asp-action="DeleteConfirm">
+            <input type="hidden" asp-for="Id" />
+
+
+            <div class="row " style="margin-top: 50px;">
+                <div class="col">
+                    <input type="submit" class="btn btn-lg btn-danger w-100" value="Tak usuń konto"/> 
+                </div>
+                <div class="col">
+                    <button type="button" onclick="location.href='@Url.Action("EditProfile", "Account")'" class="btn btn-lg btn-success w-100">Nie zabierz mnie stąd</button>
+                </div>
+
+            </div>
+            </form>
+        </div>
+    
+    <div class="col-3 h-100">
+    </div>
+</div>
