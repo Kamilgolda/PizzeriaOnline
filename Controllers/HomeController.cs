@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PizzeriaOnline.Data;
@@ -37,7 +38,7 @@ namespace PizzeriaOnline.Controllers
             var listaproduktow = await _productsRepository.GetAll();
             return View(listaproduktow);
         }
-
+        [Authorize(Roles ="Admin, Pracownik")]
         public IActionResult Privacy()
         {
             return View();

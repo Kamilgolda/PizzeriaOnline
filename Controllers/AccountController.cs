@@ -200,7 +200,8 @@ namespace PizzeriaOnline.Controllers
         public async Task<IActionResult> DeleteConfirm()
         {
             User authUser = await _userManager.GetUserAsync(User);
-            
+            //var role = await _roleManager.FindByIdAsync(authUser.Id);
+            //var role2 = (await _userManager.GetRolesAsync(authUser)).FirstOrDefault();
             if (authUser == null)
             {
                 return NotFound();
@@ -231,6 +232,14 @@ namespace PizzeriaOnline.Controllers
                 ModelState.AddModelError("", error.Description);
             }
             return RedirectToAction("Login", "Account");
+        }
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult AdminPanel()
+        {
+            List<User> users = _userManager.Users.ToList();
+            
+            return View(users);
         }
     }
 }
