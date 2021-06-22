@@ -242,8 +242,21 @@ namespace PizzeriaOnline.Controllers
         public IActionResult AdminPanel()
         {
             List<User> users = _userManager.Users.ToList();
-            
+            ViewBag.RolesV = _roleManager.Roles.ToList();
             return View(users);
+        }
+       
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangeStatus(string IdUser, string status)
+        {
+            if (IdUser == null || status == null) return NotFound();
+            var user = await _userManager.FindByIdAsync(IdUser);
+            var roles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, roles); 
+            await _userManager.AddToRoleAsync(user, status);
+
+            return RedirectToAction("AdminPanel", "Account");
+
         }
     }
 }
