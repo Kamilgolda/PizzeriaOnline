@@ -38,8 +38,9 @@ namespace PizzeriaOnline.Controllers
             var listaproduktow = await _productsRepository.GetAll();
             return View(listaproduktow);
         }
-        [Authorize(Roles ="Admin, Pracownik")]
-        public IActionResult Privacy()
+
+        [Authorize(Roles = "Worker, Admin")]
+        public IActionResult WorkerPanel()
         {
             return View();
         }

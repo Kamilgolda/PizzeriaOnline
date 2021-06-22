@@ -108,6 +108,44 @@ namespace PizzeriaOnline.Repositories
             return order.Id;
         }
 
+        public async Task Update(EditOrderViewModel ordermodel)
+        {
+            Order order = new Order()
+            {
+                Id = ordermodel.Id,
+                Address = ordermodel.Address,
+                HasDelivery = ordermodel.HasDelivery,
+                LastName = ordermodel.LastName,
+                Name = ordermodel.Name,
+                PhoneNumber = ordermodel.PhoneNumber,
+                Price = ordermodel.Price,
+                Products = ordermodel.Products,
+                Status = ordermodel.Status,
+                UserID = ordermodel.UserID
+            };
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+        }
 
+        public async Task Delete(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ChangeStatus(int id, int status)
+        {
+            OrderStatus s = OrderStatus.Waiting;
+            if (status == 0) s = OrderStatus.Waiting;
+            if (status == 1) s = OrderStatus.Started;
+            if (status == 2) s = OrderStatus.InDelivery;
+            if (status == 3) s = OrderStatus.Complete;
+            if (status == 4) s = OrderStatus.Closed;
+            var order =await GetById(id);
+            order.Status = s;
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+        }
     }
 }

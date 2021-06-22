@@ -138,6 +138,10 @@ namespace PizzeriaOnline.Controllers
         }
         public IActionResult Register()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 

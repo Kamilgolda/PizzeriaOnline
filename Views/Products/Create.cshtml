@@ -1,12 +1,11 @@
 ﻿@model PizzeriaOnline.ViewModels.CreateProductViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tworzenie produktu";
 }
 
-<h1>Create</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-8">
@@ -98,7 +97,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Products">Powrót</a>
 </div>
 
 @section Scripts {

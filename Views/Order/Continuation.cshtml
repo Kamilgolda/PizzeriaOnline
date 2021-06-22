@@ -14,6 +14,7 @@
 
 <div class="row">
     <div class="col-md-4">
+        @if (!ViewBag.close) { 
         <form asp-action="Continuation" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (SignInManager.IsSignedIn(User))
@@ -88,11 +89,16 @@
                 <input type="submit" value="Zamawiam" onclick="sessionStorage.clear()" class="btn btn-primary" />
             </div>
         </form>
+        }
+            else
+            {
+                <h1>Zamówienia realizujemy tylko w godzinach pracy pizzerii</h1>
+            }
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Menu" asp-controller="Home">Powrót to Menu</a>
 </div>
 
 @section Scripts {
