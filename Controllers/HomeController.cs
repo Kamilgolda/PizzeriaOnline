@@ -14,37 +14,58 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace PizzeriaOnline.Controllers
-{
+{   /*! Główny kontroler */
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IProductsRepository _productsRepository;
-        private readonly IWebHostEnvironment _environment;
+        private readonly IProductsRepository _productsRepository; /*! repozytorium produktów */
+        private readonly IWebHostEnvironment _environment; /*!< Informacje o środowisku uruchomieniowym */
 
-        public HomeController(ILogger<HomeController> logger, IProductsRepository productsRepository, IWebHostEnvironment environment)
+         /**
+        * Konstruktor.
+        * @param productsRepository Repozytorium do zarządzania produktami
+        * @param environment Informacje o środowisku uruchomieniowym
+        */
+        public HomeController(IProductsRepository productsRepository, IWebHostEnvironment environment)
         {
-            _logger = logger;
             _productsRepository = productsRepository;
             _environment = environment;
         }
-
+        
+        /**
+        * wyświetlenie strony głównej.
+        * @return Index.cshtml
+        */
         public IActionResult Index()
         {
             return View();
         }
 
+        /**
+        * Task odpowiadający wyświetleniu menu
+        * @return Widok Menu.cshtml
+        */
         public async Task<IActionResult> Menu()
         {
             var listaproduktow = await _productsRepository.GetAll();
             return View(listaproduktow);
         }
 
+        /**
+        * Task odpowiadający wyświetleniu panelu pracownika
+        * @return Widok WorkerPanel.cshtml
+        */
         [Authorize(Roles = "Worker, Admin")]
         public IActionResult WorkerPanel()
         {
             return View();
         }
 
+        /**
+        * Task odpowiadający pobraniu obrazka danego produktu
+        * @param id identyfikator produktu
+        * @return File jeśli obrazek dla danego produktu istnieje
+        * @return Widok NotFound gdy obrazek dla produktu o podanym id nie istnieje.
+        */
         public async Task<IActionResult> GetImage(int id)
         {
             Product requested = await _productsRepository.GetById(id);
@@ -55,9 +76,9 @@ namespace PizzeriaOnline.Controllers
                 string fullPath = webRootpath + folderPath + requested.ImageName;
                 if (System.IO.File.Exists(fullPath))
                 {
-                    FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                    FileStream fileOnDisk = new(fullPath, FileMode.Open);
                     byte[] fileBytes;
-                    using (BinaryReader br = new BinaryReader(fileOnDisk))
+                    using (BinaryReader br = new(fileOnDisk))
                     {
                         fileBytes = br.ReadBytes((int)fileOnDisk.Length);
                     }
@@ -82,6 +103,10 @@ namespace PizzeriaOnline.Controllers
         }
 
 
+        /**
+        * wyświetlenie błędu
+        * @return Widok Error.cshtml
+        */
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

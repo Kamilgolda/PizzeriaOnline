@@ -11,12 +11,19 @@ using System.Threading.Tasks;
 
 namespace PizzeriaOnline.Controllers
 {
+    /*! Klasa konrolera do zarządzania kontami */
     public class AccountController : Controller
     {
-        private SignInManager<User> _signInManager;
-        private UserManager<User> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
-
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        
+        /**
+        * Konstruktor
+        * @param signInManager manadżer mogowania
+        * @param signInManager manadżer użytkownika
+        * @param signInManager manadżer roli
+        */
         public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
@@ -24,9 +31,15 @@ namespace PizzeriaOnline.Controllers
             _roleManager = roleManager;
             //Create_Account();
         }
+
+        /**
+        * Task odpowiadający edycji profilu
+        * @return Widok EditProfile.cshtml
+        */
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> EditProfile()
+        
         {
             User authUser = await _userManager.GetUserAsync(User);
 
@@ -34,6 +47,11 @@ namespace PizzeriaOnline.Controllers
             return View(authUser);
         }
 
+        /**
+        * Task odpowiadający edycji profilu
+        * @param user użytkownik poddawany edycji
+        * @return Widok EditProfile.cshtml
+        */
         [HttpPost, ActionName("Edit")]
         [Authorize]
         public async Task<IActionResult> EditProfile(User user)
@@ -71,6 +89,10 @@ namespace PizzeriaOnline.Controllers
             return View(authUser);
         }
 
+        /**
+        * Odpowiada logowaniu
+        * @return widok login.cshtml
+        */
         public IActionResult Login()
         {
             if (this.User.Identity.IsAuthenticated)
@@ -80,9 +102,12 @@ namespace PizzeriaOnline.Controllers
             return View();
         }
 
+        /**
+        * odpowiada tworzeniu konta administratora
+        */
         public async void Create_Account()
         {
-            User user = new User()
+            User user = new()
             {
                 FirstName = "Admin",
                 Address = "avc",
@@ -107,7 +132,7 @@ namespace PizzeriaOnline.Controllers
 
                 if (!string.IsNullOrWhiteSpace(user.Email))
                 {
-                    Claim claim = new Claim(ClaimTypes.Email, user.Email);
+                    Claim claim = new(ClaimTypes.Email, user.Email);
                     await _userManager.AddClaimAsync(user, claim);
                 }
             }
@@ -116,7 +141,12 @@ namespace PizzeriaOnline.Controllers
                 ModelState.AddModelError("", error.Description);
             }
     }
-
+        /**
+        * Task odpowiadający logowaniu
+        * param loginModel model logowania
+        * @return Po zalogowaniu widok Menu.cshtml kontrolera Home
+        * @return Po niepoprawnej próbie logowania widok login.cshtml @see Login()
+        */
         [HttpPost, ActionName("Login")]
         public async Task<IActionResult> LoginPost(LoginViewModel loginModel)
         {
@@ -131,11 +161,21 @@ namespace PizzeriaOnline.Controllers
             ModelState.AddModelError("", "Błąd logowania");
             return View();
         }
+
+        /**
+        * Task odpowiadający wylogowywaniu
+        * @return Przejście do akcji Index kontrolera Home
+        */
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+         /**
+        * Odpowiada rejestracji konta
+        * @return widok Register.cshtml
+        */
         public IActionResult Register()
         {
             if (_signInManager.IsSignedIn(User))
@@ -145,13 +185,18 @@ namespace PizzeriaOnline.Controllers
             return View();
         }
 
+         /**
+        * Task odpowiadający Rejestracji konta
+        * @param registerModel model rejestracji
+        * @return Przejście do akcji Index kontrolera Home
+        */
         [HttpPost, ActionName("Register")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterPost(RegisterViewModel registerModel)
         {
             if (ModelState.IsValid)
             {
-                User user = new User
+                User user = new()
                 {
                     FirstName = registerModel.FirstName,
                     LastName = registerModel.LastName,
@@ -177,7 +222,7 @@ namespace PizzeriaOnline.Controllers
 
                     if (!string.IsNullOrWhiteSpace(user.Email))
                     {
-                        Claim claim = new Claim(ClaimTypes.Email, user.Email);
+                        Claim claim = new(ClaimTypes.Email, user.Email);
                         await _userManager.AddClaimAsync(user, claim);
                     }
 
@@ -194,18 +239,25 @@ namespace PizzeriaOnline.Controllers
             }
             return View();
         }
+
+         /**
+        * Odpowiada zablokowaniu dostępu
+        * @return widok AccessDenied.cshtml
+        */
         public IActionResult AccessDenied()
         {
             return View();
         }
 
+         /**
+        * Task odpowiadający potwierdzeniu usuwania konta zalogowanego użytkownika
+        * @return widok DeleteConfirm.cshtml
+        */
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> DeleteConfirm()
         {
             User authUser = await _userManager.GetUserAsync(User);
-            //var role = await _roleManager.FindByIdAsync(authUser.Id);
-            //var role2 = (await _userManager.GetRolesAsync(authUser)).FirstOrDefault();
             if (authUser == null)
             {
                 return NotFound();
@@ -213,6 +265,11 @@ namespace PizzeriaOnline.Controllers
             return View(authUser);
         }
 
+         /**
+        * Task odpowiadający potwierdzeniu usuwania konta użytkownika
+        * @param user użytkownik 
+        * @return widok Login.cshtml
+        */
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> DeleteConfirm(User user)
@@ -238,6 +295,10 @@ namespace PizzeriaOnline.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+         /**
+        * Task odpowiadający przejściu do panelu administratora
+        * @return widok AdminPanel.cshtml
+        */
         [Authorize(Roles ="Admin")]
         public IActionResult AdminPanel()
         {
@@ -246,6 +307,12 @@ namespace PizzeriaOnline.Controllers
             return View(users);
         }
        
+         /**
+        * Task odpowiadający zmianie roli konta użytkownika
+        * @param IdUser identyfikator użytkownika
+        * @param status nazwa roli
+        * @return widok AdminPanel.cshtml
+        */
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeStatus(string IdUser, string status)
         {

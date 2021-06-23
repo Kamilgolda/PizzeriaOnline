@@ -8,29 +8,29 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace PizzeriaOnline.Models
-{
+{   /*! Klasa produkt */
     public class Product
     {
-        public int Id { get; set; }
+        public int Id { get; set; } /*! identyfikator produktu */
 
         [Display(Name = "Nazwa:")]
         [Required(ErrorMessage = "Proszę podać nazwę")]
         [StringLength(50)]
-        public string Title { get; set; }
+        public string Title { get; set; } /*! nazwa produktu */
 
         [Display(Name = "Dostępność:")]
-        public bool Availability { get; set; }
+        public bool Availability { get; set; } /*! dostępność produktu */
 
         [Display(Name = "Obrazek:")]
-        public string ImageName { get; set; }
-        public string ImageMimeType { get; set; }
-        public byte[] PhotoFile { get; set; }
+        public string ImageName { get; set; } /*! nazwa obrazka  */
+        public string ImageMimeType { get; set; } /*! rozszerzenie obrazka */
+        public byte[] PhotoFile { get; set; } /*! plik obrazka */
 
         [Display(Name = "Obrazek:")]
         [NotMapped]
-        public IFormFile PhotoAvatar { get; set; }
+        public IFormFile PhotoAvatar { get; set; } /*! obrazek */
 
-        public ICollection<PricesForSizesProduct> PricesForSizes { get; set; }
-        public ICollection<ComponentsProduct> Components {get;set;}
+        public ICollection<PricesForSizesProduct> PricesForSizes { get; set; } /*! kolekcja cen i rozmiarów */
+        public ICollection<ComponentsProduct> Components {get;set;} /*! kolekcja składników w produkcie */
 }
 }

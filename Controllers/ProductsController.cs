@@ -14,27 +14,41 @@ using PizzeriaOnline.Models;
 using PizzeriaOnline.Repositories;
 using PizzeriaOnline.ViewModels;
 
+
 namespace PizzeriaOnline.Controllers
 {
+    /*! Kontroler do zarządzania produktami */
     public class ProductsController : Controller
     {
-        private readonly Context _context;
-        private readonly IProductsRepository _productsRepository;
-        private readonly IWebHostEnvironment _environment;
+        private readonly IProductsRepository _productsRepository; /*!< Repozytorium dla produktów */
+        private readonly IWebHostEnvironment _environment; /*!< Informacje o środowisku uruchomieniowym */
 
-        public ProductsController(Context context, IProductsRepository productsRepository, IWebHostEnvironment environment)
+        /**
+        * Konstruktor.
+        * @param productsRepository Repozytorium do zarządzania produktami
+        * @param environment Informacje o środowisku uruchomieniowym
+        */
+        public ProductsController(IProductsRepository productsRepository, IWebHostEnvironment environment)
         {
-            _context = context;
             _productsRepository = productsRepository;
             _environment = environment;
         }
 
+        /**
+        * Task odpowiadający wyświetleniu listy produktów.
+        * @return Widok Products.cshtml
+        */
         [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Products()
         {
             return View(await _productsRepository.GetAll());
         }
 
+        /**
+        * Task odpowiadający wyświetleniu szczegółów produktu
+        * @param id Identyfikator produktu
+        * @return Widok Details.cshtml
+        */
         [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -53,12 +67,20 @@ namespace PizzeriaOnline.Controllers
             return View(product);
         }
 
+        /**
+        * Funkcja pobierająca komponenty i tworząca obiekt ViewBag.ComponentId z listą wyboru.
+        * @param selectedcomponent id z listy wyboru wybranego składnika.
+        */
         private void ComponentsDropDownList(int? selectedcomponent = null)
         {
             var components = _productsRepository.ComponentsDropDownList();
             ViewBag.ComponentId = new SelectList(components.AsNoTracking(), "Id", "Name", selectedcomponent);
         }
 
+        /**
+        * Task odpowiadający tworzeniu produktu
+        * @return Widok Create.cshtml
+        */
         [Authorize(Roles = "Worker, Admin")]
         public IActionResult Create()
         {
@@ -66,6 +88,12 @@ namespace PizzeriaOnline.Controllers
             return View();
         }
 
+        /**
+        * Task odpowiadający tworzeniu produktu
+        * @param productmodel ViewModel do tworzenia produktów
+        * @return Widok Products.cshtml gdy productmodel jest poprawnie zwalidowany
+        * @return Widok Create.cshtml gdy productmodel nie jest poprawnie zwalidowany
+        */
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Worker, Admin")]
@@ -79,6 +107,12 @@ namespace PizzeriaOnline.Controllers
             return View(productmodel);
         }
 
+        /**
+        * Task odpowiadający edycji produktu
+        * @param id identyfikator produktu
+        * @return Widok Edit.cshtml gdy produkt o podanym id istneje.
+        * @return Widok NotFound gdy produkt o podanym id nie istnieje.
+        */
         [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -93,7 +127,7 @@ namespace PizzeriaOnline.Controllers
             {
                 return NotFound();
             }
-            EditProductViewModel editProductModel = new EditProductViewModel()
+            EditProductViewModel editProductModel = new()
             {
                 Id = product.Id,
                 Availability = product.Availability,
@@ -108,6 +142,12 @@ namespace PizzeriaOnline.Controllers
             return View(editProductModel);
         }
 
+        /**
+        * Task odpowiadający edycji produktu
+        * @param productmodel ViewModel do edycji produktów
+        * @return Widok Products.cshtml gdy productmodel jest poprawnie zwalidowany
+        * @return Widok Edit.cshtml gdy productmodel nie jest poprawnie zwalidowany
+        */
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Worker, Admin")]
@@ -121,6 +161,12 @@ namespace PizzeriaOnline.Controllers
             return View(productmodel);
         }
 
+        /**
+        * Task odpowiadający usuwaniu produktu
+        * @param id identyfikator produktu
+        * @return Widok Delete.cshtml gdy produkt o podanym id istneje.
+        * @return Widok NotFound gdy produkt o podanym id nie istnieje.
+        */
         [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -139,7 +185,12 @@ namespace PizzeriaOnline.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        /**
+        * Task odpowiadający potwierdzeniu usuwania produktu
+        * @param id identyfikator produktu
+        * @return Widok Products.cshtml gdy produkt zostanie usunięty.
+        * @return Widok NotFound gdy produkt o podanym id nie istnieje.
+        */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Worker, Admin")]
@@ -151,7 +202,12 @@ namespace PizzeriaOnline.Controllers
 
 
         //GET_IMAGE
-
+        /**
+        * Task odpowiadający pobraniu obrazka danego produktu
+        * @param id identyfikator produktu
+        * @return File jeśli obrazek dla danego produktu istnieje
+        * @return Widok NotFound gdy obrazek dla produktu o podanym id nie istnieje.
+        */
         public async Task<IActionResult> GetImage(int id)
         {
             Product requested = await _productsRepository.GetById(id);
@@ -162,9 +218,9 @@ namespace PizzeriaOnline.Controllers
                 string fullPath = webRootpath + folderPath + requested.ImageName;
                 if (System.IO.File.Exists(fullPath))
                 {
-                    FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                    FileStream fileOnDisk = new(fullPath, FileMode.Open);
                     byte[] fileBytes;
-                    using (BinaryReader br = new BinaryReader(fileOnDisk))
+                    using (BinaryReader br = new(fileOnDisk))
                     {
                         fileBytes = br.ReadBytes((int)fileOnDisk.Length);
                     }

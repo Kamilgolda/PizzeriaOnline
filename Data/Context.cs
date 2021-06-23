@@ -10,21 +10,23 @@ using PizzeriaOnline.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace PizzeriaOnline.Data
-{
+{   
+    /*! Kontekst bazy danych */
     public class Context : IdentityDbContext<User>
     {
+        /*! Konstruktor */
         public Context(DbContextOptions<Context> options): base(options)
         {
 
         }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Component> Components { get; set; }
-        public DbSet<PricesForSizesProduct> PricesForSizesProducts { get; set; }
-        public DbSet<ComponentsProduct> ComponentsProducts { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<ProductInOrder> ProductsInOrders { get; set; }
-        public DbSet<User> UsersDbSet { get; set; } //Nazwa - bo nie przysłaniam contextu 
+        public DbSet<Product> Products { get; set; }    /*! tabela Produktów */
+        public DbSet<Component> Components { get; set; }    /*! tabela Składników */
+        public DbSet<PricesForSizesProduct> PricesForSizesProducts { get; set; }  /*! tabela rozmiarów i cen dla produktów  */
+        public DbSet<ComponentsProduct> ComponentsProducts { get; set; } /*! tabela skladnikow dla produktu */
+        public DbSet<Order> Orders { get; set; } /*! tabela zamowień */
+        public DbSet<ProductInOrder> ProductsInOrders { get; set; } /*! tabela produktów w zamówieniach */
+        // public DbSet<User> UsersDbSet { get; set; } /*! Konstruktor */
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -13,15 +13,24 @@ using System.Threading.Tasks;
 
 namespace PizzeriaOnline.Repositories
 {
+    /*! Repozytorium do zarządzania produktami */
     public class ProductsRepository : IProductsRepository
     {
-        private readonly Context _context;
+        private readonly Context _context; /*!< Kontekst bazy danych */
 
+        /**
+        * Konstruktor.
+        * @param context Kontekst bazy danych
+        */
         public ProductsRepository(Context context)
         {
             _context = context;
         }
 
+        /**
+        * Task zwracający listę produktów.
+        * @return Lista produktów.
+        */
         public async Task<IEnumerable<Product>> GetAll()
         {
             var products = await _context
@@ -34,6 +43,11 @@ namespace PizzeriaOnline.Repositories
             
         }
 
+        /**
+        * Task zwracający produkt o podanym identyfikatorze
+        * @param id identyfikator produktu
+        * @return Lista produktów.
+        */
         public async Task<Product> GetById(int? id)
         {
             var product = await _context
@@ -47,9 +61,13 @@ namespace PizzeriaOnline.Repositories
 
         }
 
+        /**
+        * Task tworzący nowy produkt
+        * @param productmodel Model produktu
+        */
         public async Task Create(CreateProductViewModel productmodel)
         {
-            List<ComponentsProduct> componentsProductList = new List<ComponentsProduct>();
+            List<ComponentsProduct> componentsProductList = new();
             foreach (int? componentId in productmodel.Components)
             {
                 if (componentId != null) componentsProductList.Add(
@@ -71,7 +89,7 @@ namespace PizzeriaOnline.Repositories
                     });
             }
 
-            List<PricesForSizesProduct> pricesForSizesList = new List<PricesForSizesProduct>()
+            List<PricesForSizesProduct> pricesForSizesList = new()
                 {
                     new PricesForSizesProduct()
                     {
@@ -90,7 +108,7 @@ namespace PizzeriaOnline.Repositories
                     }
                 };
 
-            Product product = new Product()
+            Product product = new()
             {
                 Title = productmodel.Title,
                 Availability = productmodel.Availability,
@@ -113,6 +131,10 @@ namespace PizzeriaOnline.Repositories
             }
         }
 
+         /**
+        * Pobranie listy składników.
+        * @return wszystkie składniki
+        */
         public IQueryable<Component> ComponentsDropDownList()
         {
             var componentsQuery = from b in _context.Components
@@ -121,6 +143,12 @@ namespace PizzeriaOnline.Repositories
             return componentsQuery;
         }
 
+        /**
+        * Task usuwający produkt
+        * @param id identyfikator produktu
+        * @return true gdy usunięto produkt
+        * @return false gdy nie usunięto produktu
+        */
         public async Task<bool> Delete(int id)
         {
             var product = await _context
@@ -134,6 +162,10 @@ namespace PizzeriaOnline.Repositories
             return true;
         }
 
+        /**
+        * Task aktualizujący produkt
+        * @param productmodel Model produktu
+        */    
         public async Task Update(EditProductViewModel productmodel)
         {
             foreach (var componentProduct in productmodel.Components)
@@ -211,7 +243,7 @@ namespace PizzeriaOnline.Repositories
             
             componentsProductList = componentsProductList.Distinct().ToList();
 
-            Product product = new Product()
+            Product product = new()
             {
                 Id = productmodel.Id,
                 Availability = productmodel.Availability,

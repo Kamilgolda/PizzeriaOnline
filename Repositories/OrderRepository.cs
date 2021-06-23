@@ -10,17 +10,27 @@ using System.Threading.Tasks;
 
 namespace PizzeriaOnline.Repositories
 {
+    /*! Repozytorium do zarządzania zamówieniami */
     public class OrderRepository:IOrderRepository
     {
-        private readonly Context _context;
-        private readonly IProductsRepository _productsRepository;
+        private readonly Context _context; /*!< Kontekst bazy danych */
+        private readonly IProductsRepository _productsRepository; /*!< repozytorium produktów */
 
+        /*
+        * Konstruktor
+        * @param context kontekst bazy danych
+        * @param productsRepository repozytorium produktów
+        */
         public OrderRepository(Context context, IProductsRepository productsRepository)
         {
             _context = context;
             _productsRepository = productsRepository;
         }
 
+        /**
+        * Task zwracający listę wszystkich zamówień
+        * @return Lista zamówień
+        */
         public async Task<IEnumerable<Order>> GetAll()
         {
             var orders = await _context
@@ -29,9 +39,13 @@ namespace PizzeriaOnline.Repositories
                 .ToListAsync();
 
             return orders;
-
         }
 
+        /**
+        * Task zwracający zamówienie o podanym identyfikatorze
+        * @param id identyfikator zamówienia
+        * @return zamówienie.
+        */
         public async Task<Order> GetById(int? id)
         {
             var order = await _context
@@ -43,7 +57,11 @@ namespace PizzeriaOnline.Repositories
             return order is null ? null : order;
 
         }
-
+        
+        /**
+        * Task zwracający listę aktualnych zamówień
+        * @return Lista aktualnych zamówień
+        */
         public async Task<IEnumerable<Order>> ActualOrders()
         {
             var orders = await _context
@@ -56,6 +74,11 @@ namespace PizzeriaOnline.Repositories
             return orders;
         }
 
+        /**
+        * Task zwracający listę zamówień dla danego użytkownika
+        * @param UserID identyfikator użytkownika
+        * @return Lista aktualnych zamówień
+        */
         public async Task<IEnumerable<Order>> UserOrders(string UserID)
         {
             var orders = await _context
@@ -70,9 +93,14 @@ namespace PizzeriaOnline.Repositories
             return orders;
         }
 
+        /**
+        * Task tworzący zamówienie
+        * @param ordermodel model zamówienia
+        * @return identyfukator zamówienia
+        */
         public async Task<int> Create(OrderContinuationViewModel ordermodel)
         {
-            List<ProductInOrder> productsInOrder = new List<ProductInOrder>();
+            List<ProductInOrder> productsInOrder = new();
             double price = 0;
             foreach (var product in ordermodel.Products)
             {
@@ -92,7 +120,7 @@ namespace PizzeriaOnline.Repositories
                     productsInOrder.Add(new ProductInOrder() { ProductId = product.ProductId, Quantity = product.Quantity, Size = size });
                 }
             }
-            Order order = new Order()
+            Order order = new()
             {
                 UserID = ordermodel.UserID,
                 Name = ordermodel.Name,
@@ -108,9 +136,13 @@ namespace PizzeriaOnline.Repositories
             return order.Id;
         }
 
+         /**
+        * Task aktualizujący zamówienie
+        * @param ordermodel model zamówienia
+        */
         public async Task Update(EditOrderViewModel ordermodel)
         {
-            Order order = new Order()
+            Order order = new()
             {
                 Id = ordermodel.Id,
                 Address = ordermodel.Address,
@@ -127,13 +159,22 @@ namespace PizzeriaOnline.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+         /**
+        * Task usuwający zamówienie
+        * @param id identyfikator zamówienia
+        */
+        public async Task Delete(int? id)
         {
             var order = await _context.Orders.FindAsync(id);
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
         }
 
+         /**
+        * Task zmieniający status zamówienia
+        * @param id identyfikator zamówienia
+        * @param status nowy status zamówienia
+        */
         public async Task ChangeStatus(int id, int status)
         {
             OrderStatus s = OrderStatus.Waiting;

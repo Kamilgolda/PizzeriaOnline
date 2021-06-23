@@ -1,11 +1,12 @@
 using System;
 
 namespace PizzeriaOnline.Models
-{
+{   
     public class ErrorViewModel
     {
-        public string RequestId { get; set; }
+        /*! Klasa błedu */
+        public string RequestId { get; set; } /*! identyfikator żądania */
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId); /*! @return identyfikator żądania */
     }
 }

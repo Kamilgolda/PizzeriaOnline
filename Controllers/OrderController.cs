@@ -15,25 +15,41 @@ using PizzeriaOnline.Repositories;
 using PizzeriaOnline.ViewModels;
 
 namespace PizzeriaOnline.Controllers
-{
+{   
+    /*! Kontroler do zarządzania zamówieniami */
     public class OrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IProductsRepository _productsRepository;
-        private UserManager<User> _userManager;
+        private readonly IOrderRepository _orderRepository; /*!< Repozytorium dla zamówień */
+        private readonly IProductsRepository _productsRepository; /*!< Repozytorium dla produktów */
+        private readonly UserManager<User> _userManager; /*!< Manadżer użytkownika */
 
+        /**
+        * Konstruktor.
+        * @param orderRepository Reposytorium do zarządzania zamówieniami
+        * @param productsRepository Repozytorium do zarządzania produktami
+        * @param userManager Manadżer użytkownika 
+        */
         public OrderController(IOrderRepository orderRepository, IProductsRepository productsRepository, UserManager<User> userManager)
         {
             _orderRepository = orderRepository;
             _productsRepository = productsRepository;
             _userManager = userManager;
         }
+
+        /**
+        * Task odpowiadający wyświetleniu listy wszystkich zamówień.
+        * @return Widok Orders.cshtml
+        */
         [Authorize(Roles = "Worker,Admin")]
         public async Task<IActionResult> Orders()
         {
             return View(await _orderRepository.GetAll());
         }
 
+        /**
+        * Task odpowiadający wyświetleniu listy wszystkich zamówień użytkownika.
+        * @return Widok MyOrders.cshtml
+        */
         [Authorize]
         public async Task<IActionResult> MyOrders()
         {
@@ -42,15 +58,25 @@ namespace PizzeriaOnline.Controllers
             return View(orders);
         }
 
+        /**
+        * Task odpowiadający zmianie statusu zamówienia
+        * @param orderid identyfikator zamówienia
+        * @param status nowy status dla zamówienia
+        * @return Widok ActualOrders.cshtml
+        */
         [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> ChangeStatus(int orderid, int status)
         {
-            if (orderid == 0 || orderid == null || status == null ) return NotFound();
+            if (orderid == 0) return NotFound();
 
             await _orderRepository.ChangeStatus(orderid, status);
             return RedirectToAction(nameof(ActualOrders));
         }
 
+        /**
+        * Task odpowiadający składaniu zamówienia
+        * @return Widok Continuation.cshtml
+        */
         public IActionResult Continuation()
         {
             var actualday = DateTime.Now.DayOfWeek;
@@ -73,6 +99,12 @@ namespace PizzeriaOnline.Controllers
             return View();
         }
 
+        /**
+        * Task odpowiadający składaniu zamówienia
+        * @param ordermodel model zamówienia
+        * @return Widok Final.cshtml gdy ordermodel jest poprawnie zwalidowany
+        * @return Widok Continuation.cshtml gdy ordermodel nie jest poprawnie zwalidowany
+        */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Continuation(OrderContinuationViewModel ordermodel)
@@ -85,12 +117,21 @@ namespace PizzeriaOnline.Controllers
             return View(ordermodel);
         }
 
+        /**
+        * Task odpowiadający wyświetleniu listy aktualnych zamówień.
+        * @return Widok ActualOrders.cshtml
+        */
         [Authorize(Roles = "Worker,Admin")]
         public async Task<IActionResult> ActualOrders()
         {
             return View(await _orderRepository.ActualOrders());
         }
 
+        /**
+        * Task odpowiadający wyświetleniu szczegółów zamówienia zalogowanego użytkownika
+        * @param id Identyfikator zamówienia
+        * @return Widok DetailsUser.cshtml
+        */
         [Authorize]
         public async Task<IActionResult> DetailsUser(int? id)
         {
@@ -98,7 +139,7 @@ namespace PizzeriaOnline.Controllers
             {
                 return NotFound();
             }
-            List<Product> products = new List<Product>();
+            List<Product> products = new();
             var order = await _orderRepository.GetById(id);
             foreach(ProductInOrder product in order.Products)
             {
@@ -115,6 +156,11 @@ namespace PizzeriaOnline.Controllers
             else return NotFound();
         }
 
+        /**
+        * Task odpowiadający wyświetleniu szczegółów zamówienia
+        * @param id Identyfikator zamówienia
+        * @return Widok DetailsWorker.cshtml
+        */
         [Authorize(Roles ="Worker, Admin")]
         public async Task<IActionResult> DetailsWorker(int? id)
         {
@@ -122,7 +168,7 @@ namespace PizzeriaOnline.Controllers
             {
                 return NotFound();
             }
-            List<Product> products = new List<Product>();
+            List<Product> products = new();
             var order = await _orderRepository.GetById(id);
             foreach (ProductInOrder product in order.Products)
             {
@@ -136,7 +182,11 @@ namespace PizzeriaOnline.Controllers
             return View(order);
         }
 
-
+        /**
+        * Task odpowiadający potwierdzeniu złożenia zamówienia
+        * @param orderid identyfikator zamówienia
+        * @return Widok Final.cshtml
+        */
         public async Task<IActionResult> Final(int orderid)
         {
             var actual_orders = await _orderRepository.ActualOrders();
@@ -157,6 +207,12 @@ namespace PizzeriaOnline.Controllers
             return View();
         }
 
+        /**
+        * Task odpowiadający edycji zamówienia
+        * @param id identyfikator zamówienia
+        * @return Widok Edit.cshtml gdy zamówienie o podanym id istneje.
+        * @return Widok NotFound gdy zamówienie o podanym id nie istnieje.
+        */
         [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -164,10 +220,10 @@ namespace PizzeriaOnline.Controllers
             {
                 return NotFound();
             }
-            List<Product> products = new List<Product>();
+            List<Product> products = new();
             var order = await _orderRepository.GetById(id);
 
-            EditOrderViewModel orderModel = new EditOrderViewModel()
+            EditOrderViewModel orderModel = new()
             {
                 Id = order.Id,
                 Address = order.Address,
@@ -193,6 +249,13 @@ namespace PizzeriaOnline.Controllers
             return View(orderModel);
         }
 
+        /**
+        * Task odpowiadający edycji zamówienia
+        * @param id identyfikator zamówienia
+        * @param ordermodel model edytowanego zamówienia
+        * @return Widok ActualOrders.cshtml gdy ordermodel jest poprawnie zwalidowany
+        * @return Widok Edit.cshtml gdy ordermodel nie jest poprawnie zwalidowany
+        */
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Worker, Admin")]
@@ -225,8 +288,14 @@ namespace PizzeriaOnline.Controllers
             return View(orderModel);
         }
 
+        /**
+        * Task odpowiadający usuwaniu zamówienia
+        * @param id identyfikator zamówienia
+        * @return Widok ActualOrders.cshtml gdy produkt o podanym id istneje.
+        * @return Widok NotFound gdy zamówienie o podanym id nie istnieje.
+        */
         [Authorize(Roles = "Worker, Admin")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -238,6 +307,12 @@ namespace PizzeriaOnline.Controllers
             return RedirectToAction(nameof(ActualOrders));
         }
 
+        /**
+        * Sprawdza czy zamówienie o podanym identyfikatorze istnieje
+        * @param id identyfikator zamówienia
+        * @return true - istnieje
+        * @return false - nie istnieje
+        */
         private bool OrderExists(int id)
         {
             return _orderRepository.GetById(id) != null;
