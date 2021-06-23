@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['update_274',['Update',['../interface_pizzeria_online_1_1_repositories_1_1_i_order_repository.html#a3b4df7406a65bf12416c3ea878711005',1,'PizzeriaOnline.Repositories.IOrderRepository.Update()'],['../interface_pizzeria_online_1_1_repositories_1_1_i_products_repository.html#afe161fe9074f7c21f787f61ca5ffc5fc',1,'PizzeriaOnline.Repositories.IProductsRepository.Update()'],['../class_pizzeria_online_1_1_repositories_1_1_order_repository.html#ad6de37c1032e931c81de797ed94fb58a',1,'PizzeriaOnline.Repositories.OrderRepository.Update()'],['../class_pizzeria_online_1_1_repositories_1_1_products_repository.html#a328ea3dc0eb7afe8679cb5b4be2afd39',1,'PizzeriaOnline.Repositories.ProductsRepository.Update()']]],
+  ['userorders_275',['UserOrders',['../interface_pizzeria_online_1_1_repositories_1_1_i_order_repository.html#a79782573327f261093f82f96e5c4ab45',1,'PizzeriaOnline.Repositories.IOrderRepository.UserOrders()'],['../class_pizzeria_online_1_1_repositories_1_1_order_repository.html#a7d55f106f9bdb13efc31d799a011e5db',1,'PizzeriaOnline.Repositories.OrderRepository.UserOrders()']]]
+];

@@ -1,0 +1,8 @@
+var searchData=
+[
+  ['_5fcontext_277',['_context',['../class_pizzeria_online_1_1_repositories_1_1_order_repository.html#a0a5a35d152a82503b3fa195865306dcb',1,'PizzeriaOnline.Repositories.OrderRepository._context()'],['../class_pizzeria_online_1_1_repositories_1_1_products_repository.html#a2d1b61599ae5358d3a38fe06676d6bbd',1,'PizzeriaOnline.Repositories.ProductsRepository._context()']]],
+  ['_5fenvironment_278',['_environment',['../class_pizzeria_online_1_1_controllers_1_1_home_controller.html#a665037cd30b07db103e404a19188e97c',1,'PizzeriaOnline.Controllers.HomeController._environment()'],['../class_pizzeria_online_1_1_controllers_1_1_products_controller.html#a93d175a35a2bf75e68e126f57c17f55f',1,'PizzeriaOnline.Controllers.ProductsController._environment()']]],
+  ['_5forderrepository_279',['_orderRepository',['../class_pizzeria_online_1_1_controllers_1_1_order_controller.html#a5646dc7d9fb5bb35e962d914f5a55bb2',1,'PizzeriaOnline::Controllers::OrderController']]],
+  ['_5fproductsrepository_280',['_productsRepository',['../class_pizzeria_online_1_1_controllers_1_1_order_controller.html#af68e7ec44e351ecab81f2a55314d2545',1,'PizzeriaOnline.Controllers.OrderController._productsRepository()'],['../class_pizzeria_online_1_1_controllers_1_1_products_controller.html#aef3c46695d5e8be3ff84c07e66619d3a',1,'PizzeriaOnline.Controllers.ProductsController._productsRepository()'],['../class_pizzeria_online_1_1_repositories_1_1_order_repository.html#ab8ebf37660fe4c2f9a2c57452e62cc48',1,'PizzeriaOnline.Repositories.OrderRepository._productsRepository()']]],
+  ['_5fusermanager_281',['_userManager',['../class_pizzeria_online_1_1_controllers_1_1_order_controller.html#a54967ecbc4c63a7d2c85e6eb00c4ad8c',1,'PizzeriaOnline::Controllers::OrderController']]]
+];
