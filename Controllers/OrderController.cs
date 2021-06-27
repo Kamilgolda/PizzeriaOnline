@@ -95,6 +95,7 @@ namespace PizzeriaOnline.Controllers
             {
                 ViewBag.close = false;
             }
+            ViewBag.close = false; // NA POTRZEBY PREZENTACJI
 
             return View();
         }
