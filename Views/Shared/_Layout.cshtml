@@ -11,93 +11,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PizzeriaOnline</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/home.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/layout.css" />
     <link rel="stylesheet" href="~/css/shopping_cart.css" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-dark navbar-toggleable-sm border-bottom box-shadow mb-3">
+    <nav class="navBar">
+        <div>
+            <img src="/images/logo.png" />
+        </div>
+        <div>
+            <ul class="ul-list">
+                <li class="li-list">
+                    <a class="a-link" asp-area="" asp-controller="Home" asp-action="Index">Strona Główna</a>
+                </li>
+                <li class="li-list">
+                    <a class="a-link" asp-area="" asp-controller="Home" asp-action="Menu">Menu</a>
+                </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    if (User.IsInRole("Worker") || User.IsInRole("Admin"))
+                    {
+                        <li class="li-list">
+                            <a class="a-link" asp-area="" asp-controller="Home" asp-action="WorkerPanel">Panel Pracownika</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="li-list">
+                            <a class="a-link" asp-area="" asp-controller="Order" asp-action="MyOrders">Moje zamówienia</a>
+                        </li>
+                    }
+                }
+                <partial name="_LoginPartial" />
+                <li class="li-list">
+                    <button type="button" class="button1" data-toggle="modal" data-target="#shopping-cart" onclick="displayShoppingCart()">
+                        <img src="/images/cart.png" />
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LOGO</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1 text-light ">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Strona Główna</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Menu">Menu</a>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <button type="button" class="btn btn-primary btn-lg" id="shopping-cart-button" data-toggle="modal" data-target="#shopping-cart" onclick="displayShoppingCart()">Koszyk @*(<span class="total-count"></span>)*@</button>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            if (User.IsInRole("Worker") || User.IsInRole("Admin"))
-                            {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WorkerPanel">Panel Pracownika</a>
-                            </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Order" asp-action="MyOrders">Moje zamówienia</a>
-                                </li>
-                            }
-
-
-                        }
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <div class="modal fade " id="shopping-cart" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1" style="color:black">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel">Koszyk</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="cart">
-                        <ul class="cartWrap">
-                        </ul>
+            <div class="modal fade " id="shopping-cart" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1" style="color:black">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">Koszyk</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="cart">
+                                <ul class="cartWrap">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="subtotal cf">
+                                <div class="totalRow final"><span class="label">SUMA</span><span class="value"></span></div>
+                            </div>
+                            <a class="btn btn-primary" id="create_order" asp-action="Continuation" asp-controller="Order">Złóż zamówienie</a>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <div class="subtotal cf">
-                        <div class="totalRow final"><span class="label">SUMA</span><span class="value"></span></div>
-                    </div>
-                    <a class="btn btn-primary" id="create_order" asp-action="Continuation" asp-controller="Order">Złóż zamówienie</a>
-                </div>
             </div>
-        </div>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - PizzeriaOnline - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/shopping_cart.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2021 - PizzeriaOnline - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <script src="~/js/shopping_cart.js" asp-append-version="true"></script>
+            @await RenderSectionAsync("Scripts", required: false)
+        </body>
+        </html>

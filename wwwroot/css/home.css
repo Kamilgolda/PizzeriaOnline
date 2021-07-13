@@ -1,0 +1,112 @@
+﻿body {
+    color: #232323;
+    font-family: 'Lato', sans-serif;
+}
+
+.navBar {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+.navBar li:last-child button{
+    background: #FE5F1E;
+}
+
+.navBar li:last-child button:hover{
+    background: #b23301;
+}
+
+
+.navBar li a:hover{
+    color: #FE5F1E;
+    text-decoration: none;
+}
+
+.navBar li a{
+    transition: all .3s ease-in-out;
+}
+
+.ul-list {
+    display: flex;
+    align-items: center;
+}
+
+.li-list {
+    margin-left: 1.5rem;
+    list-style-type: none;
+}
+
+.a-link {
+    display: inline-block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 9999px;
+    color: black;
+}
+
+.section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    background: #F8F8F8;
+}
+
+.section-div {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-div-left {
+    width: 50%;
+}
+
+.h6-text {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+.h1-text {
+    font-size: 3.75rem;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.button1 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 9999px;
+    color: white;
+    font-weight: 700;
+    margin-top: 1rem;
+    background-color: #FE5F1E;
+    display: inline-block;
+}
+
+.button1 a{
+    text-decoration: none;
+    color: black;
+}
+
+.button1:hover {
+    background-color: #b23301;
+    transition: all .3s ease-in-out;
+}
+
+.section-div-left img{
+    width: 700px;
+    height: 620px;
+}

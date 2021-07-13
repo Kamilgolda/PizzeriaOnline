@@ -4,32 +4,30 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
 
     
     @if ((await UserManager.GetRolesAsync(await UserManager.GetUserAsync(User))).FirstOrDefault() == "Admin")
     {
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" href="@Url.Action("AdminPanel", "Account")">Panel Administratora</a>
+        <li class="li-list">
+            <a id="manage" class="a-link" href="@Url.Action("AdminPanel", "Account")">Panel Administratora</a>
         </li>
     }
 
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" href="@Url.Action("EditProfile", "Account")">Mój profil</a>
+    <li class="li-list">
+        <a id="manage" class="a-link" href="@Url.Action("EditProfile", "Account")">Mój profil</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="@Url.Action("Logout", "Account")">Wyloguj</a>
+    <li class="li-list">
+        <a class="a-link" href="@Url.Action("Logout", "Account")">Wyloguj</a>
     </li>
     }
     else
     {
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" href="@Url.Action("Register", "Account")">Zarejestruj się</a>
+    <li class="li-list">
+        <a class="a-link" id="register" href="@Url.Action("Register", "Account")">Zarejestruj się</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" href="@Url.Action("Login", "Account")">Zaloguj</a>
+    <li class="li-list">
+        <a class="a-link" id="login" href="@Url.Action("Login", "Account")">Zaloguj</a>
     </li>
     }
-</ul>

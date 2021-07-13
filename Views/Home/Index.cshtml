@@ -2,40 +2,18 @@
     ViewData["Title"] = "Strona Startowa";
 }
 
-<div class="p-5 d-flex flex-column justify-content-center">
-    <h1 class="p-lg-2 align-self-center">Witamy w naszej pizzerii</h1>
-    <h4 class="p-lg-2 align-self-center" style="text-align:center">
-        Najlepsza pizza w mieście czeka na Ciebie każdego dnia w naszym lokalu. Zapraszamy do siebie
-        na prawdziwie włoskie jedzenie.
-    </h4>
-    <div class="p-lg-2 pb-lg-5 align-self-center">
-        <a class="btn btn-info btn-lg" asp-action="Menu">Zobacz Menu</a>
-        <a class="btn btn-success btn-lg" asp-action="Register" asp-controller="Account">Zarejestruj się</a>
-        <a class="btn btn-warning btn-lg" asp-action="Login" asp-controller="Account">Zaloguj się</a>
+<section class="section">
+    <div class="section-div">
+        <div class="section-div-left">
+            <h6 class="h6-text"><em>Jesteś głodny?</em></h6>
+            <h1 class="h1-text">Nie czekaj!</h1>
+            <button class="button1">
+                <a class="a-link" asp-area="" asp-controller="Home" asp-action="Menu">Zamów teraz</a>
+            </button>
+        </div>
+        <div class="section-div-left">
+            <img src="~/images/hero-pizza.png"/>
+        </div>
     </div>
-    
-    <div class="border border-success p-3 align-self-center mx-xl-5 rounded-pill">
-        <h2 style="text-align:center">DLACZEGO WARTO</h2>
-        <p style="text-align:center">
-            Własny wyrób i wypiek pizzy to nasza specjalność. Działamy od 2002 roku i jesteśmy najstarszą pizzerią w mieście!
-            Wyrób pizzy opanowaliśmy do perfekcji, ponad 15 lat doświadczenia jest tego gwarancją. W naszej ofercie proponujemy
-            Wam smaczne pizze prosto z pieca.
-        </p>
-
-        <p style="text-align:center">
-            Nasz szef kuchni Tomasz, lub jak wolimy go nazywać "Luciano" pracował w najlepszej włoskiej pizzerii przez 4 lata.
-            Dziś jest u nas i kręci najlepsze pizze specjalnie dla Was.
-        </p>
-
-        <p style="text-align:center">Jeżeli jeszcze nas nie odwiedziłeś/odwiedziłaś to zapraszamy na kulinarną podróż po Włoszech!</p>
-
-        <div style="text-align:center"><a class="btn btn-primary btn-lg" asp-action="Menu">Zobacz Menu</a></div>
-    </div>
-    
-    <h3 class="p-lg-2 align-self-center">GODZINY OTWARCIA:</h3>
-    <p class="align-self-center">
-        poniedziałek 14:00 - 23:00 <br /> wtorek 14:00 - 23:00 <br /> środa 14:00 - 23:00 <br /> czwartek 14:00 - 23:00 <br /> piątek 14:00 - 00:00
-        <br /> sobota 14:00 - 00:00 <br /> niedziela 14:00 - 00:00
-    </p>
-</div>
+</section>
 
